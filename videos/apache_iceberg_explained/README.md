@@ -9,6 +9,11 @@ A table format is a metadata layer that turns a pile of Parquet files in object 
 
 ![What Apache Iceberg actually is](images/iceberg-anatomy.png)
 
+### What the mechanics buy you
+You do not run the mechanics, you just get the payoff. Snapshots give you time travel, catalog commits give you safe concurrent writes, and open metadata gives you engine independence. The mechanics are the features.
+
+![What the mechanics buy you](images/iceberg-mechanics.png)
+
 ### Here to stay, or not?
 The honest debate. On one side, near-universal engine adoption (Snowflake, Databricks, AWS, Google, Confluent) and open governance. On the other, the "Big Data is Dead" case that most workloads never hit the scale Iceberg was built for.
 
