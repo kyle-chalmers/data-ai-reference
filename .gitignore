@@ -107,3 +107,7 @@ LOCAL_*.md
 
 # Personal data (LinkedIn exports, etc.) — never committed to public repo
 videos/az_tech_week_workshop/linkedin_data/
+
+# Local tool/IDE config, not project source
+.codex/
+.project
