@@ -90,9 +90,12 @@ A single extraction pass can only ever produce `accept`. The judgment lives in t
 Business question, the decision it informs, grain (one row per what), metric definition, timeframe,
 deadline.
 
-Grain and metric definition are almost never said out loud in a meeting. That is not a prompting
-problem — the information is not in the input. When they are missing, the correct output is a
-question back to the requester, which is what step 2 drafts. The centre of Caitlin Hudon's
+![What a data request needs before it can be worked](images/data-request-fields.png)
+
+Taking one real request from the sample transcript: the meeting supplied three of the six fields and
+never mentioned the other three. Grain and metric definition are almost never said out loud. That is
+not a prompting problem — the information is not in the input. When they are missing, the correct
+output is a question back to the requester, which is what step 2 drafts. The centre of Caitlin Hudon's
 [intake form for data requests](https://www.caitlinhudon.com/posts/2020/09/16/data-intake-form) is
 still the best single question to ask: *what decision will you make, or what action will you take,
 with this data?*
