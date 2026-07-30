@@ -3,6 +3,8 @@
 The input to this workflow is a plain text file. That is the whole interface, so it does not much
 matter what your team records with — only whether you can get the text onto disk.
 
+![Whatever you record with, it ends at one text file](images/transcript-sources.png)
+
 All rows verified against vendor documentation on **2026-07-29**. This space changes quickly; check
 the vendor's own docs before relying on a plan or format detail.
 
