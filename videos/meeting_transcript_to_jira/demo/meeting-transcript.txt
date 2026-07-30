@@ -1,89 +1,76 @@
 Weekly Analytics Sync
 Thursday, 10:00 AM
-Attendees: Priya Raghunathan, Marcus Bell, Dana Okonkwo, Kyle Chalmers
+Participants: Ada Lovelace, Grace Hopper
+
+NOTE: this is the pre-written fallback. Replace it with the real Zoom transcript
+(~/Documents/Zoom) after recording — see meeting-script.md.
 
 ---
 
-Priya: Okay, I think we're all here. Dana, do you want to start with the dashboard thing?
+Ada Lovelace: Okay, I think that's everyone. Let's start with the dashboard.
 
-Dana: Yeah. So the exec dashboard broke again on Tuesday. The refresh failed silently and nobody noticed until Sanjay pinged me Wednesday afternoon asking why the numbers were two days stale.
+Grace Hopper: Yeah, the exec dashboard broke again on Tuesday. The refresh failed and nobody noticed until Sanjay pinged me Wednesday afternoon asking why the numbers were two days stale.
 
-Marcus: Silently as in no alert fired?
+Ada Lovelace: Failed as in no alert fired?
 
-Dana: No alert. The job status said succeeded because the extract technically completed, it just pulled zero rows.
+Grace Hopper: No alert. The job status said succeeded, because the extract technically completed. It just pulled zero rows.
 
-Priya: That's the second time this month.
+Ada Lovelace: That's the second time this month.
 
-Dana: Third, if you count the one in the first week. I'll fix the refresh and put a row-count check on it so it actually fails loudly when it pulls nothing.
+Grace Hopper: Third, if you count the one in the first week.
 
-Priya: Good. When can you have that?
+Ada Lovelace: Alright, I'll fix the refresh and put a row-count check on it, so it actually fails loudly when it pulls nothing. End of week, it's not a big change.
 
-Dana: End of week, it's not a big change.
+Grace Hopper: Good.
 
-Priya: Okay. Next thing. The QBR is in three weeks and Sanjay wants churn broken out by region this time.
+Ada Lovelace: Next thing. The QBR is in three weeks and Sanjay wants churn broken out by region this time.
 
-Marcus: By region meaning the sales regions or the billing regions? Because those don't line up.
+Grace Hopper: By region meaning the sales regions, or the billing regions? Because those don't line up.
 
-Priya: I think sales regions. That's what the rest of the deck uses.
+Ada Lovelace: I think sales regions. That's what the rest of the deck uses.
 
-Marcus: Okay. I can pull that. It's going to take me a bit because we've never cut churn that way before.
+Grace Hopper: Okay. I can pull that. It's going to take me a bit, we've never cut churn that way before. But yeah, I'll get the churn by region numbers together for the QBR.
 
-Priya: That's fine, you've got three weeks.
+Ada Lovelace: You've got three weeks.
 
-Marcus: Yeah, I'll get the churn by region numbers together for the QBR.
+Grace Hopper: Are we defining churn the same way finance does? Because I think they have a version of this. They showed a churn slide last quarter.
 
-Dana: Are we defining churn the same way finance does? Because I know they have a version of this.
+Ada Lovelace: Might be worth looking at.
 
-Marcus: I don't know actually. I think finance has something similar already, they showed a churn slide last quarter.
+Grace Hopper: Yeah, maybe.
 
-Priya: Might be worth looking at.
+Ada Lovelace: Okay. The weekly deck. Honestly, somebody should look at whether we even need it anymore. I don't think anyone reads it.
 
-Marcus: Yeah, maybe.
+Grace Hopper: I've wondered the same thing. It'd be nice to have this stuff in Slack instead of a deck nobody opens.
 
-Priya: Okay, moving on. The weekly deck.
+Ada Lovelace: Maybe. Let's park that, we don't have time to redesign reporting right now.
 
-Dana: Honestly, somebody should look at whether we even need the weekly deck anymore. I don't think anyone reads it.
+Grace Hopper: One more on data quality. We've still got all those test accounts in the customer table showing up in the counts. A few hundred? They all have the internal email domain, so they're easy to spot.
 
-Priya: I've wondered the same thing.
+Ada Lovelace: We could probably just filter those out.
 
-Marcus: It'd be nice to have this stuff in Slack instead of a deck nobody opens.
+Grace Hopper: Probably. Not urgent though.
 
-Priya: Maybe. Let's park that, we don't have time to redesign reporting right now.
+Ada Lovelace: The other thing is the revenue metric. Every team has a slightly different number and I keep getting asked which one is right. Let me just write down the definition we're actually using, so we have one place to point people. I'll put it in Confluence.
 
-Dana: One more thing on data quality. We've still got all those test accounts in the customer table showing up in the counts.
+Grace Hopper: Perfect, that'd help.
 
-Marcus: How many are we talking?
+Grace Hopper: Oh, before I forget. The EMEA numbers.
 
-Dana: A few hundred? They all have the internal email domain so they're easy to spot.
+Ada Lovelace: What about them?
 
-Marcus: We could probably just filter those out.
+Grace Hopper: I'm not sure whether the EMEA rollup includes the reseller channel or not. If it does, the regional churn cut is going to look wrong and Sanjay will catch it.
 
-Priya: Probably. Not urgent though.
+Ada Lovelace: That would be bad in front of the board.
 
-Dana: The other thing is the revenue metric. Every team has a slightly different number and I keep getting asked which one is right.
+Grace Hopper: Yeah. I'll check whether reseller is in the EMEA rollup before I build the churn cut. Shouldn't take long.
 
-Priya: That's a real problem. Can you write down the definition we're actually using so we have one place to point people?
+Ada Lovelace: Okay, good.
 
-Dana: Yeah, I'll document the revenue metric definition and where it comes from. I'll put it in Confluence.
+Grace Hopper: Are we still thinking about moving off the current BI tool next year?
 
-Priya: Perfect.
+Ada Lovelace: It comes up every planning cycle. I don't think anything's decided.
 
-Marcus: Oh, before I forget. The EMEA numbers.
+Grace Hopper: Fair enough.
 
-Priya: What about them?
-
-Marcus: I'm not sure whether the EMEA rollup includes the reseller channel or not. If it does, the regional churn cut is going to look wrong and Sanjay will catch it.
-
-Priya: Hm. Yeah, that would be bad in front of the board.
-
-Marcus: I'll check whether reseller is in the EMEA rollup before I build the churn cut. Shouldn't take long.
-
-Priya: Okay good.
-
-Dana: Are we still thinking about moving off the current BI tool next year?
-
-Priya: It comes up every planning cycle. I don't think anything's decided.
-
-Dana: Fair enough.
-
-Priya: Alright, anything else? No? Okay, thanks everyone.
+Ada Lovelace: Alright, anything else? No? Thanks.
