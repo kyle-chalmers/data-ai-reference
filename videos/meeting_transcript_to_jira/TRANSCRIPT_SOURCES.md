@@ -8,6 +8,33 @@ matter what your team records with — only whether you can get the text onto di
 All rows verified against vendor documentation on **2026-07-29**. This space changes quickly; check
 the vendor's own docs before relying on a plan or format detail.
 
+## Read this first: it is almost certainly switched off
+
+The single most common reason you cannot find a transcript is not that your tool lacks the feature.
+It is that nobody has enabled it. Nearly every tool here ships transcription **off by default**, and
+on most of them the switch belongs to an admin rather than to you.
+
+| Tool | Who has to turn it on |
+|---|---|
+| **Zoom** | You can, in your own settings (Pro/Business/Enterprise). An admin can also lock it on account-wide |
+| **Microsoft Teams** | Admin, via meeting policy (`AllowTranscription`) |
+| **Google Meet** | Workspace admin console. Business Standard or above |
+| **Webex** | Admin. Their docs state it plainly: your administrator must allow saving transcripts |
+| **Notion AI Meeting Notes** | Workspace owner. Business or Enterprise plan |
+| **Granola** | On by default for Basic and Business; **disabled by default on Enterprise** |
+| **Read.ai** | One admin toggle disables exports and the API together |
+| **Avoma** | Admin creates API keys and publishes the MCP connector |
+| **Otter** | M365 needs admin consent through Otter's own link, not the Entra button |
+
+The practical move is to ask once. It is a five minute request, these settings can usually be locked
+on for the whole team, and it unblocks everything downstream.
+
+**A second gate if your tool uses a bot.** Teams now forces detected notetaker bots into the lobby
+by default (`ExternalBotAccessMode` = `RequireApprovalWhenDetected`), and Google Meet auto-denies
+them outright under Restricted access. A notetaker that worked last year may quietly stop appearing.
+Tools that capture system audio instead (Notion, Granola, Supernormal) have nothing to block — the
+trade is that nothing appears in the participant list either, so tell people.
+
 ---
 
 ## Tier 1 — a readable file, no API work
