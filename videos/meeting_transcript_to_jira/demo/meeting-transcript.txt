@@ -2,9 +2,6 @@ Weekly Analytics Sync
 Thursday, 10:00 AM
 Participants: Ada Lovelace, Grace Hopper
 
-NOTE: this is the pre-written fallback. Replace it with the real Zoom transcript
-(~/Documents/Zoom) after recording — see meeting-script.md.
-
 ---
 
 Ada Lovelace: Okay, I think that's everyone. Let's start with the dashboard.
