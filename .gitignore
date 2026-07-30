@@ -111,3 +111,7 @@ videos/az_tech_week_workshop/linkedin_data/
 # Local tool/IDE config, not project source
 .codex/
 .project
+
+# RuleMetric Antigravity workspace hooks (machine-local)
+.agents/hooks.json
+.claude/settings.local.json.bak
