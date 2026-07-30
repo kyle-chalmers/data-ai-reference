@@ -121,11 +121,14 @@ acli jira auth login --web
 
 ### MCP Setup
 ```bash
-claude mcp add --scope user --transport sse atlassian https://mcp.atlassian.com/v1/sse
+claude mcp add --scope user --transport http atlassian https://mcp.atlassian.com/v1/mcp/authv2
 # In Claude Code session:
 /mcp
 # Follow OAuth flow in browser
 ```
+
+> **Updated 2026-07-30.** The endpoint moved off SSE. Easier still, Claude now has a Connectors
+> Directory: Customize → Connectors → **+** → Browse → Atlassian → Connect, with nothing to type.
 
 [Full MCP Setup Guide](./ATLASSIAN_MCP_SETUP.md)
 
