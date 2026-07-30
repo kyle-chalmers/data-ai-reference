@@ -50,13 +50,16 @@ Simplicity should be a key goal in design. Choose straightforward solutions over
 
 Avoid building functionality on speculation. Implement features only when they are needed, not when you anticipate they might be useful in the future.
 
-### CLI Over MCP
+### Tool Selection: MCP vs CLI
 
-When both CLI tools and MCP servers are available for the same service (e.g., Jira, Snowflake), **prefer CLI tools first**.
+**Atlassian (Jira, Confluence): prefer the official Atlassian MCP over `acli`.** The MCP is the first choice for all Jira and Confluence work — reading tickets, searching with JQL, commenting, transitioning, and Confluence pages. Use `acli` only as a fallback when the MCP is unavailable or unauthenticated.
+
+**Everything else: prefer CLI tools first.** When both a CLI tool and an MCP server exist for the same service (Snowflake, GitHub, Databricks), the CLI is the first choice.
 
 **Priority order:**
-1. CLI tools (acli, snow, gh, databricks)
-2. MCP servers (as fallback)
+1. Official Atlassian MCP (Jira/Confluence only)
+2. CLI tools (snow, gh, databricks; `acli` as Atlassian fallback)
+3. Other MCP servers (as fallback)
 
 ## Critical Operating Rules
 
@@ -213,6 +216,7 @@ Specialized agents in `.claude/agents/` and commands in `.claude/commands/` hand
   - Schema operations: `snow sql -q "DESCRIBE TABLE schema.table"`
 
 - **Jira CLI (`acli`)** - Ticket tracking and workflow automation | [Docs](https://developer.atlassian.com/cloud/acli/reference/commands/)
+  - **Fallback only** - prefer the official Atlassian MCP for Jira/Confluence (see [Tool Selection](#tool-selection-mcp-vs-cli)); use `acli` when the MCP is unavailable or unauthenticated
   - View tickets: `acli jira workitem view TICKET-KEY`
   - List projects: `acli jira project list --limit 10`
   - Create tickets: Use file input to avoid labels field issues (**<200 words max**)
@@ -693,7 +697,7 @@ All completed tickets are stored under `tickets/` directory.
 ### Research Process for Related Tickets
 When working on a ticket, research for related tickets to understand patterns and reuse solutions:
 
-1. **Check ticket relationships**: Use `acli jira workitem view TICKET-KEY`
+1. **Check ticket relationships**: Use the Atlassian MCP to fetch the ticket (`acli jira workitem view TICKET-KEY` as fallback)
 2. **Search repository**: Look for similar ticket folders in `tickets/` directory  
 3. **Check Google Drive**: Search for historical context if not in repo
 
@@ -790,7 +794,7 @@ Add source identification columns when working with multiple attachments/sources
 
 ### Slack Messaging for Completion
 When completing tickets:
-1. **Complete ticket** and post using acli
+1. **Complete ticket** and post the comment via the Atlassian MCP (`acli` as fallback)
 2. **Get comment link** from ticket
 3. **ALWAYS ASK PERMISSION** before sending Slack messages (**<100 words max**)
 4. **Use Slack CLI functions** to notify stakeholders
