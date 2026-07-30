@@ -1,0 +1,89 @@
+Weekly Analytics Sync
+Thursday, 10:00 AM
+Attendees: Priya Raghunathan, Marcus Bell, Dana Okonkwo, Kyle Chalmers
+
+---
+
+Priya: Okay, I think we're all here. Dana, do you want to start with the dashboard thing?
+
+Dana: Yeah. So the exec dashboard broke again on Tuesday. The refresh failed silently and nobody noticed until Sanjay pinged me Wednesday afternoon asking why the numbers were two days stale.
+
+Marcus: Silently as in no alert fired?
+
+Dana: No alert. The job status said succeeded because the extract technically completed, it just pulled zero rows.
+
+Priya: That's the second time this month.
+
+Dana: Third, if you count the one in the first week. I'll fix the refresh and put a row-count check on it so it actually fails loudly when it pulls nothing.
+
+Priya: Good. When can you have that?
+
+Dana: End of week, it's not a big change.
+
+Priya: Okay. Next thing. The QBR is in three weeks and Sanjay wants churn broken out by region this time.
+
+Marcus: By region meaning the sales regions or the billing regions? Because those don't line up.
+
+Priya: I think sales regions. That's what the rest of the deck uses.
+
+Marcus: Okay. I can pull that. It's going to take me a bit because we've never cut churn that way before.
+
+Priya: That's fine, you've got three weeks.
+
+Marcus: Yeah, I'll get the churn by region numbers together for the QBR.
+
+Dana: Are we defining churn the same way finance does? Because I know they have a version of this.
+
+Marcus: I don't know actually. I think finance has something similar already, they showed a churn slide last quarter.
+
+Priya: Might be worth looking at.
+
+Marcus: Yeah, maybe.
+
+Priya: Okay, moving on. The weekly deck.
+
+Dana: Honestly, somebody should look at whether we even need the weekly deck anymore. I don't think anyone reads it.
+
+Priya: I've wondered the same thing.
+
+Marcus: It'd be nice to have this stuff in Slack instead of a deck nobody opens.
+
+Priya: Maybe. Let's park that, we don't have time to redesign reporting right now.
+
+Dana: One more thing on data quality. We've still got all those test accounts in the customer table showing up in the counts.
+
+Marcus: How many are we talking?
+
+Dana: A few hundred? They all have the internal email domain so they're easy to spot.
+
+Marcus: We could probably just filter those out.
+
+Priya: Probably. Not urgent though.
+
+Dana: The other thing is the revenue metric. Every team has a slightly different number and I keep getting asked which one is right.
+
+Priya: That's a real problem. Can you write down the definition we're actually using so we have one place to point people?
+
+Dana: Yeah, I'll document the revenue metric definition and where it comes from. I'll put it in Confluence.
+
+Priya: Perfect.
+
+Marcus: Oh, before I forget. The EMEA numbers.
+
+Priya: What about them?
+
+Marcus: I'm not sure whether the EMEA rollup includes the reseller channel or not. If it does, the regional churn cut is going to look wrong and Sanjay will catch it.
+
+Priya: Hm. Yeah, that would be bad in front of the board.
+
+Marcus: I'll check whether reseller is in the EMEA rollup before I build the churn cut. Shouldn't take long.
+
+Priya: Okay good.
+
+Dana: Are we still thinking about moving off the current BI tool next year?
+
+Priya: It comes up every planning cycle. I don't think anything's decided.
+
+Dana: Fair enough.
+
+Priya: Alright, anything else? No? Okay, thanks everyone.
