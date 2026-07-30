@@ -63,6 +63,13 @@ records with.
 
 Work in [`demo/`](demo/). It contains a sample transcript and the three prompts, in order.
 
+**Want a real transcript rather than the sample?** [`demo/meeting-script.md`](demo/meeting-script.md)
+is a two-person meeting written to be performed in Zoom, so you can generate a genuine transcript
+with real speaker labels. You do not need a second person: join from two devices under different
+display names, since Zoom labels the transcript by participant rather than by voice. Two labeled
+speakers is the minimum — a single-speaker transcript collapses the "who committed" question and
+the assignee lookup along with it.
+
 | Step | Prompt | What it does |
 |---|---|---|
 | 1 | [`01-extract-candidates.md`](demo/prompts/01-extract-candidates.md) | Reads the transcript, judges every candidate, writes nothing |
