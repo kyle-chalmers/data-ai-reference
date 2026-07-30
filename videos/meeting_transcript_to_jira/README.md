@@ -76,6 +76,10 @@ the assignee lookup along with it.
 | 2 | [`02-clarify.md`](demo/prompts/02-clarify.md) | Drafts questions back to requesters for items missing fields |
 | 3 | [`03-draft-and-ship.md`](demo/prompts/03-draft-and-ship.md) | Drafts the tickets, stops, creates them on approval |
 
+[TICKET_TEMPLATE.md](TICKET_TEMPLATE.md) is what steps 1 and 3 work against: the five-test gate that
+routes a candidate to one of the four outcomes, and the description skeleton an `accept` gets filled
+into.
+
 Atlassian's `capture-tasks-from-meeting-notes` skill covers the extraction on its own and is a
 reasonable place to start. These prompts add the layer it does not: deciding what should not be
 filed, and catching what a request is missing before it lands on the board.
