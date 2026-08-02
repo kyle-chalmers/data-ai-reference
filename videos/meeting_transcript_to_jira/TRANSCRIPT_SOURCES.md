@@ -45,11 +45,23 @@ trade is that nothing appears in the participant list either, so tell people.
 | **Zoom meeting transcript** | `.TXT` | "Save transcript" in-meeting → `~/Documents/Zoom` | Paid plan; confirm yours | **Yes, off by default** | No |
 | **Microsoft Teams** | `.docx` or `.vtt` | Chat → past meeting → Recap → Transcript → Download | Core Teams capability, not Premium-only | Organizer controls who can download | No |
 | **Webex**  (Cisco) | `.vtt` or `.txt` | User Hub → Recordings → Transcript → Download. Also downloadable in-meeting from the captions panel | Webex Suite meeting platform | Admin allows in-meeting download | No |
+| **Granola** | CSV export that includes the transcript, plus MCP | Settings → Profile → Generate CSV. Emailed within a few hours; the link works for 24 hours | Export on any plan. Transcripts over MCP are paid-plan only | On by default, off by default on Enterprise | **No** — captures system audio |
 
 > **Zoom: two different features, easy to confuse.** *Meeting transcript* is the one that saves a
 > retained `.TXT`. *Captions* are live-only — Zoom removed post-meeting caption saving in May 2026. If
 > a guide tells you to save your captions after the call, it is out of date. Turn on Meeting
 > transcript instead.
+
+> **Granola: the CSV is a bulk account export, not a per-meeting download.** Granola's docs on
+> [exporting notes](https://docs.granola.ai/help-center/sharing/exporting-notes) state the CSV
+> "includes the title, note summary, transcript, and other basic details for each note." The
+> transcript is in there. The caveats are about coverage rather than content: it only includes notes
+> **you own** in the workspaces you select, it skips deleted notes and any note without a summary,
+> and you can generate **one export every 24 hours per account**. Data export is on by default on
+> Basic and Business and off by default on Enterprise, where an admin turns it on. For a single
+> meeting, use the [MCP server](https://docs.granola.ai/help-center/sharing/integrations/mcp)
+> instead. Its `get_meeting_transcript` tool returns the raw transcript on paid plans, over OAuth
+> with no API key to manage. *(Granola rows verified 2026-08-02.)*
 
 ## Tier 2 — clean, but API-mediated
 
@@ -58,7 +70,6 @@ trade is that nothing appears in the participant list either, so tell people.
 | **Google Meet** | Google Doc; API returns plain text | `conferenceRecords.transcripts.entries`. **Entries are deleted 30 days after the conference.** The Docs file follows Drive/Vault retention instead. Drive-for-desktop syncs Docs as pointer stubs, so a local agent cannot read a synced file directly |
 | **Fireflies** | JSON, PDF, DOCX, SRT, CSV, MD | Bearer-token API. **Check your own plan before relying on this** — Fireflies' pricing page lists API access from Pro, while their API guide implies broader access. Test it on the account you actually have |
 | **Grain** | `.md`, and API gives `.txt` / `.vtt` / `.srt` / JSON | MCP `fetch_meeting_transcript` works on **all plans including Free**. REST API access from Starter up |
-| **Granola** | MCP | The CSV export holds titles, summaries and details — **not** full transcripts. Transcript access is through MCP, on paid plans. **No bot** — captures system audio |
 | **Zoom cloud recording** | `.vtt` only | `GET /meetings/{id}/recordings`, then the `TRANSCRIPT` file. Bearer header, not a query param |
 | **Fathom, MeetGeek, Avoma, Circleback** | JSON via API or webhook | All have documented transcript endpoints or transcript-bearing webhooks |
 
