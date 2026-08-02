@@ -296,11 +296,11 @@ cat ~/.claude.json | python3 -m json.tool | grep -A 20 '"mcpServers"'
       "args": [
         "snowflake-labs-mcp",
         "--account",
-        "your-account-id",
+        "YOUR-ACCOUNT",
         "--user",
-        "your-username",
+        "YOUR-USER",
         "--role",
-        "YOUR_ROLE",
+        "YOUR-ROLE",
         "--private-key-file",
         "/Users/YOUR_USERNAME/.snowflake/keys/rsa_key.p8"
       ],
@@ -445,8 +445,9 @@ SSL error with underscores in account name:
 Role doesn't have access:
 ```bash
 # Verify role has necessary permissions in Snowflake
-# Try a different role with broader access
---role ACCOUNTADMIN  # or another appropriate role
+# Switch to a role that is granted access to the objects you are querying
+# Prefer the narrowest role that works, rather than reaching for ACCOUNTADMIN
+--role YOUR-ROLE
 ```
 
 PAT not evaluating secondary roles:
@@ -474,11 +475,11 @@ uvx snowflake-labs-mcp \
 
 ## Working Example
 
-**Verified configuration:**
+**A working configuration looks like this:**
 ```bash
-Account: fivmgcz-mab86679
-User: kylechalmers
-Role: ACCOUNTADMIN
+Account: YOUR-ACCOUNT
+User: YOUR-USER
+Role: YOUR-ROLE  (use a read-scoped role, not ACCOUNTADMIN)
 Auth: JWT (private key)
 Scope: User (available in all projects)
 Status: ✓ Connected
