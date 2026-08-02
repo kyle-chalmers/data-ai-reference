@@ -5,8 +5,8 @@ matter what your team records with — only whether you can get the text onto di
 
 ![Every meeting tool has an exit to a text file](images/transcript-sources.png)
 
-Rows re-verified against vendor documentation on **2026-07-30**. This space changes quickly, and plan
-and admin details in particular go stale fast — check the vendor's own docs before relying on one.
+Rows re-verified against vendor documentation on **2026-08-02**. This space changes quickly, and plan
+and admin details in particular go stale fast, so check the vendor's own docs before relying on one.
 
 ## Read this first: it is probably just switched off
 
@@ -17,7 +17,7 @@ that nobody enabled it, or that you are not the person allowed to download it.
 |---|---|
 | **Zoom** | You can, in your own settings. An admin can also lock it on account-wide |
 | **Microsoft Teams** | On by default in the global meeting policy; admins can restrict it via `AllowTranscription`. Separately, only the organizer and co-organizers can **download** by default |
-| **Google Meet** | On by default for most eligible editions, and a host or co-host can start it. An admin can restrict it |
+| **Google Meet** | On by default for every eligible edition except Education with a student license. With host management on, only the host and co-hosts can start it; with it off, anyone in the host's domain can. An admin can restrict it, except on **Business Standard, which has no admin control** |
 | **Webex** | An admin controls whether in-meeting transcript download is allowed |
 | **Slack** | **You can.** Any member starts AI notes in a huddle, or sets a channel to start them automatically |
 | **Notion AI Meeting Notes** | Workspace owner. Business or Enterprise plan |
@@ -41,7 +41,7 @@ trade is that nothing appears in the participant list either, so tell people.
 
 | Tool | Format | How you get it | Plan | Admin gate | Bot joins? |
 |---|---|---|---|---|---|
-| **Notion AI Meeting Notes** | Markdown via page export or API | API: `GET /v1/pages/{id}/markdown?include_transcript=true` | Business or Enterprise | Workspace owner controls it | **No** — captures system audio |
+| **Notion AI Meeting Notes** | Markdown via page export or API | API: `GET /v1/pages/{id}/markdown?include_transcript=true`, which needs a `Notion-Version: 2026-03-11` header | Business or Enterprise | Workspace owner controls it | **No** — captures system audio |
 | **Zoom meeting transcript** | `.TXT` | "Save transcript" in-meeting → `~/Documents/Zoom` | Paid plan; confirm yours | **Yes, off by default** | No |
 | **Microsoft Teams** | `.docx` or `.vtt` | Chat → past meeting → Recap → Transcript → Download | Core Teams capability, not Premium-only | Organizer controls who can download | No |
 | **Webex**  (Cisco) | `.vtt` or `.txt` | User Hub → Recordings → Transcript → Download. Also downloadable in-meeting from the captions panel | Webex Suite meeting platform | Admin allows in-meeting download | No |
@@ -61,13 +61,13 @@ trade is that nothing appears in the participant list either, so tell people.
 > Basic and Business and off by default on Enterprise, where an admin turns it on. For a single
 > meeting, use the [MCP server](https://docs.granola.ai/help-center/sharing/integrations/mcp)
 > instead. Its `get_meeting_transcript` tool returns the raw transcript on paid plans, over OAuth
-> with no API key to manage. *(Granola rows verified 2026-08-02.)*
+> with no API key to manage.
 
 ## Tier 2 — clean, but API-mediated
 
 | Tool | Format | Notes |
 |---|---|---|
-| **Google Meet** | Google Doc; API returns plain text | `conferenceRecords.transcripts.entries`. **Entries are deleted 30 days after the conference.** The Docs file follows Drive/Vault retention instead. Drive-for-desktop syncs Docs as pointer stubs, so a local agent cannot read a synced file directly |
+| **Google Meet** | Google Doc; API returns plain text | `conferenceRecords.transcripts.entries`. **The conference record is deleted 30 days after the conference ends**, taking the transcript and its entries with it. The Docs file follows Drive/Vault retention instead. Drive-for-desktop syncs Docs as pointer stubs, so a local agent cannot read a synced file directly |
 | **Fireflies** | JSON, PDF, DOCX, SRT, CSV, MD | Bearer-token API. **Check your own plan before relying on this** — Fireflies' pricing page lists API access from Pro, while their API guide implies broader access. Test it on the account you actually have |
 | **Grain** | `.md`, and API gives `.txt` / `.vtt` / `.srt` / JSON | MCP `fetch_meeting_transcript` works on **all plans including Free**. REST API access from Starter up |
 | **Zoom cloud recording** | `.vtt` only | `GET /meetings/{id}/recordings`, then the `TRANSCRIPT` file. Bearer header, not a query param |
@@ -91,10 +91,10 @@ down to the artifact underneath.
 
 ## If your tool gives you audio but no text
 
-Upload the audio file to **Word on the web** (Transcribe, on a Microsoft 365 subscription — check the
-current monthly allowance, it has changed before) and save the result, or run it through local
-Whisper. This covers Zoom computer recordings, which produce MP4, M4A and a chat log but no
-transcript file.
+Upload the audio file to **Word on the web** (Transcribe, on a Microsoft 365 subscription: 300 minutes
+a month on Business, Enterprise and Education, 200 on Personal and Family, 30,000 with a Copilot
+license) and save the result, or run it through local Whisper. This covers Zoom computer recordings,
+which produce MP4, M4A and a chat log but no transcript file.
 
 This is the reason nothing on this page is a true dead end: audio always collapses back to text.
 
