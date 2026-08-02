@@ -300,7 +300,7 @@ cat ~/.claude.json | python3 -m json.tool | grep -A 20 '"mcpServers"'
         "--user",
         "YOUR-USER",
         "--role",
-        "ANALYST_ROLE",
+        "YOUR-ROLE",
         "--private-key-file",
         "/Users/YOUR_USERNAME/.snowflake/keys/rsa_key.p8"
       ],
@@ -446,7 +446,8 @@ Role doesn't have access:
 ```bash
 # Verify role has necessary permissions in Snowflake
 # Switch to a role that is granted access to the objects you are querying
---role ANALYST_ROLE  # or another role that has the access you need
+# Prefer the narrowest role that works, rather than reaching for ACCOUNTADMIN
+--role YOUR-ROLE
 ```
 
 PAT not evaluating secondary roles:
@@ -478,7 +479,7 @@ uvx snowflake-labs-mcp \
 ```bash
 Account: YOUR-ACCOUNT
 User: YOUR-USER
-Role: ANALYST_ROLE
+Role: YOUR-ROLE  (use a read-scoped role, not ACCOUNTADMIN)
 Auth: JWT (private key)
 Scope: User (available in all projects)
 Status: ✓ Connected

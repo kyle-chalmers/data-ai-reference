@@ -14,7 +14,7 @@ The simplest fix - close and reopen Claude Code terminal.
 /Users/YOUR_USERNAME/Library/Python/3.9/bin/uvx snowflake-labs-mcp \
   --account YOUR-ACCOUNT \
   --user YOUR-USER \
-  --role ANALYST_ROLE \
+  --role YOUR-ROLE \
   --private-key-file ~/.snowflake/keys/rsa_key.p8
 ```
 
@@ -40,7 +40,7 @@ claude mcp add --transport stdio snowflake -s user -- \
   /Users/YOUR_USERNAME/Library/Python/3.9/bin/uvx snowflake-labs-mcp \
   --account YOUR-ACCOUNT \
   --user YOUR-USER \
-  --role ANALYST_ROLE \
+  --role YOUR-ROLE \
   --private-key-file ~/.snowflake/keys/rsa_key.p8
 ```
 
