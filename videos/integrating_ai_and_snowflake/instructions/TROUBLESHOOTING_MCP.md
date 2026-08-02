@@ -11,10 +11,10 @@ The simplest fix - close and reopen Claude Code terminal.
 
 ### 2. Test MCP Manually
 ```bash
-/Users/kylechalmers/Library/Python/3.9/bin/uvx snowflake-labs-mcp \
-  --account fivmgcz-mab86679 \
-  --user kylechalmers \
-  --role ACCOUNTADMIN \
+/Users/YOUR_USERNAME/Library/Python/3.9/bin/uvx snowflake-labs-mcp \
+  --account YOUR-ACCOUNT \
+  --user YOUR-USER \
+  --role ANALYST_ROLE \
   --private-key-file ~/.snowflake/keys/rsa_key.p8
 ```
 
@@ -37,10 +37,10 @@ Should show your Snowflake MCP config with CLI arguments.
 ```bash
 claude mcp remove snowflake -s user
 claude mcp add --transport stdio snowflake -s user -- \
-  /Users/kylechalmers/Library/Python/3.9/bin/uvx snowflake-labs-mcp \
-  --account fivmgcz-mab86679 \
-  --user kylechalmers \
-  --role ACCOUNTADMIN \
+  /Users/YOUR_USERNAME/Library/Python/3.9/bin/uvx snowflake-labs-mcp \
+  --account YOUR-ACCOUNT \
+  --user YOUR-USER \
+  --role ANALYST_ROLE \
   --private-key-file ~/.snowflake/keys/rsa_key.p8
 ```
 
