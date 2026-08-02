@@ -115,3 +115,6 @@ videos/az_tech_week_workshop/linkedin_data/
 # RuleMetric Antigravity workspace hooks (machine-local)
 .agents/hooks.json
 .claude/settings.local.json.bak
+
+# Claude Code ship-gate review artifacts (machine-local)
+.shipgate/
