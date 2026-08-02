@@ -106,4 +106,4 @@ cat ~/.snowflake/config.toml
 
 ---
 
-**Next:** [Compare CLI vs MCP](../SNOWFLAKE_CLI_VS_MCP.md) | **Docs:** https://docs.snowflake.com/cli
+**Next:** [Compare CLI vs MCP](../snowflake_cli_v_mcp_comparison/SNOWFLAKE_CLI_VS_MCP.md) | **Docs:** https://docs.snowflake.com/cli

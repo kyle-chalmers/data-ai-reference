@@ -9,7 +9,7 @@ Quick setup guides for using Snowflake with Claude Code.
 
 ## Which Should I Use?
 
-See the **[CLI vs MCP Comparison](../SNOWFLAKE_CLI_VS_MCP.md)** in the parent directory.
+See the **[CLI vs MCP Comparison](../snowflake_cli_v_mcp_comparison/SNOWFLAKE_CLI_VS_MCP.md)** in the parent directory.
 
 **Quick answer:**
 - **CLI** → CSV exports, large datasets, scheduled tasks
