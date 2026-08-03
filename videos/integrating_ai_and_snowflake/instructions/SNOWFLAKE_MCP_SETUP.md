@@ -56,7 +56,9 @@ claude mcp list
 
 > ⚠️ **Critical:**
 > - Clone the Snowflake MCP repository first (contains required configuration template)
-> - Use `--scope user` and CLI arguments (`--account`, `--user`) NOT `--connection-name`
+> - Use `--scope user`, and identify the connection with `--account` and `--user` rather than
+>   `--connection-name`. The exception is OAuth, which this server can only reach through a named
+>   connection (see [OAuth Authentication](#4-oauth-authentication))
 > - Create the service configuration file before adding the MCP server
 
 ---
@@ -64,6 +66,45 @@ claude mcp list
 ## Authentication Options
 
 The Snowflake MCP server supports all authentication methods from the [Snowflake Python Connector](https://docs.snowflake.com/en/developer-guide/python-connector/python-connector-connect). Choose the method that matches your organization's security requirements.
+
+> ⚠️ **Never pass a password, passcode, or token as a CLI argument.**
+>
+> `claude mcp add` stores every argument you give it verbatim in `~/.claude.json`. See the
+> [Verify Your Configuration](#verify-your-configuration) section below for what that file looks
+> like. A secret passed as a flag is written to that file in plaintext and stays there for every
+> future session.
+>
+> This is true even when you write `--password "$SNOWFLAKE_PASSWORD"`. Your shell expands the
+> variable before `claude mcp add` ever runs, so the literal value is what gets stored.
+>
+> So keep secrets out of the flags and supply them through the environment instead. The examples
+> below pass `--account`, `--user`, and `--role` as flags, because those identify the connection
+> rather than authorize it, and leaving them out has a failure mode of its own (see the warning
+> under [Password Authentication](#5-password-authentication)).
+>
+> **What this does and does not buy you.** Both `~/.claude.json` and your process environment are
+> readable only by your own user account, so this does not hide the secret from anyone who could
+> not already read it. What it buys is *ephemerality*: an exported variable dies with the shell,
+> while `~/.claude.json` persists indefinitely and travels into backups, support bundles, and
+> screen shares. That is a real gain, and it is the specific gain.
+>
+> It also carries a matching hazard. Every process Claude Code launches inherits that variable,
+> including commands the model runs for you, and Claude Code writes tool output to plaintext
+> transcripts under `~/.claude/projects/`. Avoid running `env`, `printenv`, `set`, or scripts that
+> dump their environment during a session where a credential is exported.
+>
+> Typing a secret directly on the command line is worse than either: it lands in `~/.zsh_history`
+> or `~/.bash_history`, and its argv is visible to your other processes via `ps`.
+>
+> **Key pair authentication sidesteps all of this**, because `--private-key-file` is a path rather
+> than a secret. Prefer it for anything long-running.
+>
+> **On the `read -rs` prompts below:** they read a value without echoing it, so the secret never
+> appears on screen or in your history. Run the `read` line **on its own** rather than pasting a
+> whole block: a pasted block feeds its next line into `read` as the value, and because `-s`
+> hides the input you get no sign that it happened. The examples use zsh syntax, the macOS
+> default. On bash, swap the argument order and export separately:
+> `read -rsp "Password: " SNOWFLAKE_PASSWORD; export SNOWFLAKE_PASSWORD`.
 
 ### 1. Private Key Authentication
 
@@ -84,8 +125,8 @@ claude mcp add --scope user --transport stdio snowflake -- \
 
 **With encrypted private key:**
 ```bash
-# Set environment variable for key password
-export SNOWFLAKE_PRIVATE_KEY_FILE_PWD="your-key-password"
+# The key password is a secret, so supply it through the environment, not a flag
+read -rs "SNOWFLAKE_PRIVATE_KEY_FILE_PWD?Key password: "; export SNOWFLAKE_PRIVATE_KEY_FILE_PWD
 
 claude mcp add --scope user --transport stdio snowflake -- \
   /Users/YOUR_USERNAME/Library/Python/3.9/bin/uvx snowflake-labs-mcp \
@@ -93,68 +134,73 @@ claude mcp add --scope user --transport stdio snowflake -- \
   --account YOUR-ACCOUNT \
   --user YOUR-USER \
   --role YOUR-ROLE \
-  --private-key-file /Users/YOUR_USERNAME/.snowflake/keys/encrypted_key.p8 \
-  --private-key-file-pwd "$SNOWFLAKE_PRIVATE_KEY_FILE_PWD"
+  --private-key-file /Users/YOUR_USERNAME/.snowflake/keys/encrypted_key.p8
 ```
 
 ### 2. Multi-Factor Authentication (MFA/2FA)
 
 **Option A: Passcode in Password (Most Common)**
 
-When your Snowflake account requires MFA, append the passcode to your password:
+When your Snowflake account requires MFA, append the passcode to your password and pass the
+combined value as `SNOWFLAKE_PASSWORD`. `--passcode-in-password` takes a value, so write
+`--passcode-in-password True`; it carries no secret, so it is safe as a CLI argument.
 
 ```bash
-# Format: PASSWORD + MFA_CODE (6 digits)
-# Example: If password is "MyPass123" and MFA code is "987654"
-# Combined value: "MyPass123987654"
+# Run this line by itself. Format: PASSWORD + MFA_CODE (6 digits), no space between them.
+# If your password is "MyPass123" and the MFA code is "987654", enter "MyPass123987654"
+read -rs "SNOWFLAKE_PASSWORD?Password followed by MFA code: "; export SNOWFLAKE_PASSWORD
+```
 
+```bash
 claude mcp add --scope user --transport stdio snowflake -- \
   /Users/YOUR_USERNAME/Library/Python/3.9/bin/uvx snowflake-labs-mcp \
   --service-config-file /Users/YOUR_USERNAME/.mcp/snowflake_config.yaml \
   --account YOUR-ACCOUNT \
   --user YOUR-USER \
-  --password "YOUR-PASSWORD123456" \
   --role YOUR-ROLE \
-  --passcode-in-password
+  --passcode-in-password True
 ```
 
 **Option B: Separate Passcode Parameter**
 
 ```bash
-# Set MFA passcode as environment variable
-export SNOWFLAKE_PASSCODE="123456"
+# Run each read line by itself
+read -rs "SNOWFLAKE_PASSWORD?Password: "; export SNOWFLAKE_PASSWORD
+read -rs "SNOWFLAKE_PASSCODE?MFA passcode: "; export SNOWFLAKE_PASSCODE
+```
 
+```bash
 claude mcp add --scope user --transport stdio snowflake -- \
   /Users/YOUR_USERNAME/Library/Python/3.9/bin/uvx snowflake-labs-mcp \
   --service-config-file /Users/YOUR_USERNAME/.mcp/snowflake_config.yaml \
   --account YOUR-ACCOUNT \
   --user YOUR-USER \
-  --password YOUR-PASSWORD \
-  --passcode "$SNOWFLAKE_PASSCODE" \
   --role YOUR-ROLE
 ```
 
-**Option C: MFA with Environment Variables**
+**Option C: Persist the Non-Secret Values**
 
-For better security, use environment variables for credentials:
+Account, user, and role are not secrets, so they can live in your shell profile if you would
+rather not repeat them. Keep the password and passcode out of it.
 
 ```bash
 # Add to ~/.zshrc or ~/.bashrc
 export SNOWFLAKE_ACCOUNT="YOUR-ACCOUNT"
 export SNOWFLAKE_USER="YOUR-USER"
-export SNOWFLAKE_PASSWORD="YOUR-PASSWORD"
-export SNOWFLAKE_PASSCODE="123456"  # Update each session
 export SNOWFLAKE_ROLE="YOUR-ROLE"
-
-# Then add MCP server without exposing credentials
-claude mcp add --scope user --transport stdio snowflake -- \
-  /Users/YOUR_USERNAME/Library/Python/3.9/bin/uvx snowflake-labs-mcp \
-  --service-config-file /Users/YOUR_USERNAME/.mcp/snowflake_config.yaml
 ```
+
+Supply the password each session as in Options A and B. If you set all three variables here, you
+can drop the matching flags from `claude mcp add`, but read the warning under
+[Password Authentication](#5-password-authentication) first.
 
 **MFA Important Notes:**
 - MFA passcodes expire quickly (typically 30-60 seconds)
-- You'll need to regenerate and update the passcode for each new session
+- You'll need to regenerate and re-export the passcode for each new session. This is the second
+  reason not to pass one as a CLI argument: a value baked into `~/.claude.json` is stale within
+  the minute, so the config would be both insecure and wrong
+- Because Claude Code launches the MCP server as a subprocess, it sees the environment of the
+  shell that started Claude Code. Export the variables, then start Claude Code from that shell
 - Consider using SSO or key pair authentication for long-running MCP sessions
 
 ### 3. Single Sign-On (SSO)
@@ -177,50 +223,85 @@ claude mcp add --scope user --transport stdio snowflake -- \
 
 ### 4. OAuth Authentication
 
-```bash
-# Set OAuth token as environment variable
-export SNOWFLAKE_OAUTH_TOKEN="your-oauth-token-here"
+> ⚠️ **This server has no OAuth token parameter.** As of `snowflake-labs-mcp` 1.3.4 there is no
+> `--token` flag and no `SNOWFLAKE_OAUTH_TOKEN` environment variable; the only built-in OAuth path
+> is the token file that Snowpark Container Services mounts inside a container. Passing
+> `--authenticator oauth` on its own gives the connector no token to use.
+>
+> Check `uvx snowflake-labs-mcp --help` for your installed version before relying on this.
 
+If you need OAuth outside a container, define the connection in `~/.snowflake/connections.toml`
+(or the `[connections.NAME]` section of `~/.snowflake/config.toml`, which is where
+`snow connection add` writes) and point the server at it by name. That keeps the token out of both
+the command line and `~/.claude.json`:
+
+```bash
 claude mcp add --scope user --transport stdio snowflake -- \
   /Users/YOUR_USERNAME/Library/Python/3.9/bin/uvx snowflake-labs-mcp \
   --service-config-file /Users/YOUR_USERNAME/.mcp/snowflake_config.yaml \
-  --account YOUR-ACCOUNT \
-  --user YOUR-USER \
-  --authenticator oauth \
-  --role YOUR-ROLE
+  --connection-name YOUR-CONNECTION
 ```
+
+One catch: `SNOWFLAKE_*` environment variables take precedence over the values in the named
+connection. If you followed Option C and put `SNOWFLAKE_ACCOUNT` and friends in your shell
+profile, unset them before using `--connection-name`, or they will quietly win.
+
+Otherwise use SSO (Option 3) or key pair authentication (Option 1), both of which this server
+supports directly.
 
 ### 5. Password Authentication
 
 ```bash
+# Run this line by itself
+read -rs "SNOWFLAKE_PASSWORD?Password: "; export SNOWFLAKE_PASSWORD
+```
+
+```bash
 claude mcp add --scope user --transport stdio snowflake -- \
   /Users/YOUR_USERNAME/Library/Python/3.9/bin/uvx snowflake-labs-mcp \
   --service-config-file /Users/YOUR_USERNAME/.mcp/snowflake_config.yaml \
   --account YOUR-ACCOUNT \
   --user YOUR-USER \
-  --password YOUR-PASSWORD \
   --role YOUR-ROLE
 ```
+
+> ⚠️ **Keep `--account`, `--user`, and `--role` as flags.** If you pass no connection parameters
+> at all, the server does not stop and warn you. It falls back to the default entry in
+> `~/.snowflake/connections.toml`, so you get `✓ Connected` as whatever identity and role that
+> file happens to hold. Launch Claude Code from a shell where you never ran the exports, and it
+> connects as something other than what you intended, silently.
+>
+> After setup, confirm who you actually are:
+>
+> ```bash
+> snow sql -q "SELECT CURRENT_USER(), CURRENT_ROLE(), CURRENT_ACCOUNT()"
+> ```
+>
+> or ask Claude the same question through the MCP server.
 
 ### 6. Programmatic Access Token (PAT)
 
 ```bash
-# PATs use the password parameter
-export SNOWFLAKE_PASSWORD="your-pat-token-here"
+# PATs are supplied through SNOWFLAKE_PASSWORD. Run this line by itself.
+read -rs "SNOWFLAKE_PASSWORD?PAT: "; export SNOWFLAKE_PASSWORD
+```
 
+```bash
 claude mcp add --scope user --transport stdio snowflake -- \
   /Users/YOUR_USERNAME/Library/Python/3.9/bin/uvx snowflake-labs-mcp \
   --service-config-file /Users/YOUR_USERNAME/.mcp/snowflake_config.yaml \
   --account YOUR-ACCOUNT \
   --user YOUR-USER \
-  --password "$SNOWFLAKE_PASSWORD" \
   --role YOUR-ROLE
 ```
 
 **PAT Important Notes:**
 - PATs do NOT evaluate secondary roles
 - Select appropriate role when creating the PAT
-- More secure than password authentication for automated workflows
+- More secure than password authentication for automated workflows, because a PAT can be revoked
+  on its own without changing the account password
+- Do not pass the PAT as `--password "$SNOWFLAKE_PASSWORD"`. The shell expands it and the token
+  is written to `~/.claude.json` in plaintext
 
 ---
 
@@ -244,18 +325,20 @@ other_services:
   semantic_manager: true  # Semantic views
 
 # Set SQL permissions - CUSTOMIZE FOR YOUR SECURITY REQUIREMENTS
+# This template starts with table-data writes disabled. Turn one on as a task needs it.
+# Read the note on Command below before treating this as a read-only setup.
 sql_statement_permissions:
   - Select: true          # Allow SELECT queries
-  - Create: true          # Allow CREATE statements
-  - Insert: true          # Allow INSERT operations
-  - Update: true          # Allow UPDATE operations
+  - Create: false         # RECOMMENDED: Disable CREATE until you need it
+  - Insert: false         # RECOMMENDED: Disable INSERT until you need it
+  - Update: false         # RECOMMENDED: Disable UPDATE until you need it
   - Drop: false           # RECOMMENDED: Disable DROP for safety
   - Delete: false         # RECOMMENDED: Disable DELETE for safety
-  - Alter: true           # Allow ALTER statements
-  - Merge: true           # Allow MERGE operations
+  - Alter: false          # RECOMMENDED: Disable ALTER until you need it
+  - Merge: false          # RECOMMENDED: Disable MERGE until you need it
   - TruncateTable: false  # RECOMMENDED: Disable TRUNCATE for safety
   - Describe: true        # Allow DESCRIBE operations
-  - Command: true         # Allow SHOW, GRANT, etc.
+  - Command: true         # Allow SHOW and anything else the parser does not model (see note)
   - Comment: true         # Allow COMMENT statements
   - Commit: true          # Allow COMMIT
   - Rollback: true        # Allow ROLLBACK
@@ -270,11 +353,35 @@ EOF
 --service-config-file /Users/YOUR_USERNAME/.mcp/snowflake_config.yaml
 ```
 
+**Turning on a write statement:** when a task genuinely needs one, flip that single key to `true`,
+restart Claude Code so the server reloads the config, and flip it back when the task is done. A
+config that starts closed and opens one door at a time is much easier to reason about than one
+that starts open.
+
 **Security Best Practices:**
 - Start with minimal permissions and add as needed
 - Keep `Drop`, `Delete`, and `TruncateTable` set to `false` for safety
 - Set `Unknown: false` to block unrecognized SQL statements
 - Review the [SQL Execution documentation](https://github.com/Snowflake-Labs/mcp#sql-execution) for more details
+
+> ⚠️ **`Command` is a catch-all, and it is wider than it looks.** The server classifies statements
+> with a SQL parser, and everything the parser does not model separately lands in `Command`. On
+> Snowflake that includes `CREATE ROLE`, `CREATE USER`, `CALL`, `GRANT ROLE ... TO USER`, and,
+> most importantly, `EXECUTE IMMEDIATE` — which can carry a `DROP` inside a string and so route
+> straight around `Drop: false`.
+>
+> Privilege grants such as `GRANT SELECT ON TABLE ... TO ROLE ...` are recognized separately and
+> blocked, since the template has no `Grant` key. Role membership grants are not, so
+> `GRANT ROLE ... TO USER ...` goes through as a `Command`.
+>
+> The template above leaves `Command: true` because `SHOW` drives nearly all exploration and the
+> guide is not much use without it. Accept that trade knowingly: **this config is not a write
+> barrier.** Set `Command: false` if you want one, and expect to lose `SHOW`.
+>
+> Either way, the durable control is the Snowflake role. Grant the role only the access the work
+> needs, so the database refuses what the config might let through. Treat
+> `sql_statement_permissions` as a guardrail against accidents, not as a defense against a
+> determined caller.
 
 ---
 
@@ -401,9 +508,9 @@ openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt \
 MFA passcode expired:
 ```bash
 # MFA codes expire every 30-60 seconds
-# Generate a new code and update your configuration
-claude mcp remove snowflake -s user
-# Re-add with fresh MFA code appended to password
+# Because the credential lives in the environment rather than in ~/.claude.json,
+# you do not need to remove and re-add the server. Re-export and restart Claude Code:
+read -rs "SNOWFLAKE_PASSWORD?Password followed by a fresh MFA code: "; export SNOWFLAKE_PASSWORD
 ```
 
 Wrong passcode format:
@@ -424,11 +531,9 @@ External browser not opening:
 
 OAuth token expired:
 ```bash
-# Regenerate OAuth token through your provider
-# Update the environment variable
-export SNOWFLAKE_OAUTH_TOKEN="new-token-here"
-claude mcp remove snowflake -s user
-# Re-add with new token
+# This server has no OAuth token parameter (see the OAuth section above).
+# Regenerate the token with your provider and update the connections.toml entry
+# you point at with --connection-name, then restart Claude Code.
 ```
 
 **Account Identifier Issues:**
@@ -467,9 +572,11 @@ uvx snowflake-labs-mcp \
   --account YOUR-ACCOUNT \
   --user YOUR-USER \
   --role YOUR-ROLE \
-  --private-key-file ~/.snowflake/keys/rsa_key.p8 \
-  --verbose
+  --private-key-file ~/.snowflake/keys/rsa_key.p8
 ```
+
+Note: this server has no `--verbose` flag. Run it in the foreground as above and read what it
+prints on stderr.
 
 ---
 
@@ -514,7 +621,7 @@ Status: ✓ Connected
 | Organization uses SSO | SSO (externalbrowser/Okta/ADFS) | 5 min | Session-based |
 | Service accounts | PAT or Private Key | 5 min | Until revoked |
 | Local testing only | Password Authentication | 1 min | Session-based |
-| OAuth-enabled apps | OAuth Token | 5 min | Token expiry |
+| OAuth-enabled apps | Named connection, or SSO instead | 10 min | Token expiry |
 
 ### Common Command Patterns
 
@@ -548,29 +655,36 @@ npx @modelcontextprotocol/inspector \
 
 ### Authentication Parameters Quick Reference
 
-| Method | Required Parameters | Optional Parameters |
-|--------|-------------------|-------------------|
-| **Private Key** | `--account`, `--user`, `--role`, `--private-key-file` | `--private-key-file-pwd`, `--warehouse` |
-| **MFA/2FA** | `--account`, `--user`, `--password`, `--role`, `--passcode-in-password` | `--passcode`, `--warehouse` |
-| **SSO** | `--account`, `--user`, `--authenticator`, `--role` | `--warehouse` |
-| **OAuth** | `--account`, `--user`, `--authenticator oauth`, `--role` | `--warehouse` |
-| **Password** | `--account`, `--user`, `--password`, `--role` | `--warehouse` |
-| **PAT** | `--account`, `--user`, `--password` (PAT), `--role` | `--warehouse` |
+Non-secret values can go in either column. Secrets belong in the environment, never in a CLI
+argument, for the reason given at the top of [Authentication Options](#authentication-options).
+
+| Method | Safe as CLI flags | Supply via environment |
+|--------|-------------------|------------------------|
+| **Private Key** | `--account`, `--user`, `--role`, `--private-key-file`, `--warehouse` | `SNOWFLAKE_PRIVATE_KEY_FILE_PWD` (encrypted keys only) |
+| **MFA/2FA** | `--account`, `--user`, `--role`, `--passcode-in-password True`, `--warehouse` | `SNOWFLAKE_PASSWORD`, `SNOWFLAKE_PASSCODE` |
+| **SSO** | `--account`, `--user`, `--authenticator`, `--role`, `--warehouse` | none |
+| **OAuth** | not supported directly; see [OAuth Authentication](#4-oauth-authentication) | none |
+| **Password** | `--account`, `--user`, `--role`, `--warehouse` | `SNOWFLAKE_PASSWORD` |
+| **PAT** | `--account`, `--user`, `--role`, `--warehouse` | `SNOWFLAKE_PASSWORD` (holds the PAT) |
 
 ### Environment Variables
 
-All authentication methods can use environment variables instead of CLI arguments:
+All authentication methods can use environment variables instead of CLI arguments. For anything
+secret this is the recommended path, not merely an alternative, because CLI arguments are stored
+in `~/.claude.json` in plaintext.
 
 ```bash
-export SNOWFLAKE_ACCOUNT="your-account"
-export SNOWFLAKE_USER="your-username"
-export SNOWFLAKE_PASSWORD="your-password"    # For password/PAT auth
-export SNOWFLAKE_PASSCODE="123456"          # For MFA
-export SNOWFLAKE_ROLE="your-role"
-export SNOWFLAKE_WAREHOUSE="your-warehouse"
-export SNOWFLAKE_PRIVATE_KEY_FILE="~/.snowflake/keys/rsa_key.p8"
-export SNOWFLAKE_PRIVATE_KEY_FILE_PWD="key-password"
-export SNOWFLAKE_OAUTH_TOKEN="oauth-token"
+export SNOWFLAKE_ACCOUNT="YOUR-ACCOUNT"
+export SNOWFLAKE_USER="YOUR-USER"
+export SNOWFLAKE_ROLE="YOUR-ROLE"
+export SNOWFLAKE_WAREHOUSE="YOUR-WAREHOUSE"
+export SNOWFLAKE_PRIVATE_KEY_FILE="$HOME/.snowflake/keys/rsa_key.p8"  # not ~, it will not expand
+
+# Secrets: prompt for these rather than typing them, so they stay out of shell history.
+# Run each read line by itself.
+read -rs "SNOWFLAKE_PASSWORD?Password or PAT: "; export SNOWFLAKE_PASSWORD
+read -rs "SNOWFLAKE_PASSCODE?MFA passcode: "; export SNOWFLAKE_PASSCODE
+read -rs "SNOWFLAKE_PRIVATE_KEY_FILE_PWD?Key password: "; export SNOWFLAKE_PRIVATE_KEY_FILE_PWD
 
 # Then add server without explicit credentials
 claude mcp add --scope user --transport stdio snowflake -- \

@@ -8,12 +8,13 @@ Quick setup guide for the Snowflake CLI (`snow`) - the simplest way to query Sno
 # Install
 brew install snowflake-cli
 
-# Configure (password auth - easiest)
+# Configure. Omit --password so the CLI prompts for it without echoing;
+# passing it inline stores the password in your shell history, and snow warns about it.
+# snow prompts for every unset field, so press Enter to skip the ones you do not need.
 snow connection add \
   --connection-name prod \
   --account YOUR-ACCOUNT \
   --user YOUR-USER \
-  --password \
   --role YOUR-ROLE
 
 # Test
@@ -34,7 +35,7 @@ snow sql -q "SELECT * FROM customers" --format csv > data.csv
 
 | Method | Command | Best For |
 |--------|---------|----------|
-| **Password** (easiest) | `snow connection add --connection-name prod --account X --user Y --password --role Z` | Getting started |
+| **Password** (easiest) | `snow connection add --connection-name prod --account X --user Y --role Z` (prompts for the password) | Getting started |
 | **Private Key** | Add `--authenticator SNOWFLAKE_JWT --private-key-path ~/.snowflake/keys/rsa_key.p8` | Production |
 | **SSO** | Add `--authenticator externalbrowser` | SSO orgs |
 
@@ -106,4 +107,4 @@ cat ~/.snowflake/config.toml
 
 ---
 
-**Next:** [Compare CLI vs MCP](../SNOWFLAKE_CLI_VS_MCP.md) | **Docs:** https://docs.snowflake.com/cli
+**Next:** [Compare CLI vs MCP](../snowflake_cli_v_mcp_comparison/SNOWFLAKE_CLI_VS_MCP.md) | **Docs:** https://docs.snowflake.com/cli
