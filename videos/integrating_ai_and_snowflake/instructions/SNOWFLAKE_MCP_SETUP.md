@@ -56,7 +56,9 @@ claude mcp list
 
 > ⚠️ **Critical:**
 > - Clone the Snowflake MCP repository first (contains required configuration template)
-> - Use `--scope user` and CLI arguments (`--account`, `--user`) NOT `--connection-name`
+> - Use `--scope user`, and identify the connection with `--account` and `--user` rather than
+>   `--connection-name`. The exception is OAuth, which this server can only reach through a named
+>   connection (see [OAuth Authentication](#4-oauth-authentication))
 > - Create the service configuration file before adding the MCP server
 
 ---
@@ -228,9 +230,10 @@ claude mcp add --scope user --transport stdio snowflake -- \
 >
 > Check `uvx snowflake-labs-mcp --help` for your installed version before relying on this.
 
-If you need OAuth outside a container, put the connection in `~/.snowflake/connections.toml` and
-point the server at it by name, which keeps the token out of both the command line and
-`~/.claude.json`:
+If you need OAuth outside a container, define the connection in `~/.snowflake/connections.toml`
+(or the `[connections.NAME]` section of `~/.snowflake/config.toml`, which is where
+`snow connection add` writes) and point the server at it by name. That keeps the token out of both
+the command line and `~/.claude.json`:
 
 ```bash
 claude mcp add --scope user --transport stdio snowflake -- \
@@ -238,6 +241,10 @@ claude mcp add --scope user --transport stdio snowflake -- \
   --service-config-file /Users/YOUR_USERNAME/.mcp/snowflake_config.yaml \
   --connection-name YOUR-CONNECTION
 ```
+
+One catch: `SNOWFLAKE_*` environment variables take precedence over the values in the named
+connection. If you followed Option C and put `SNOWFLAKE_ACCOUNT` and friends in your shell
+profile, unset them before using `--connection-name`, or they will quietly win.
 
 Otherwise use SSO (Option 3) or key pair authentication (Option 1), both of which this server
 supports directly.
@@ -331,7 +338,7 @@ sql_statement_permissions:
   - Merge: false          # RECOMMENDED: Disable MERGE until you need it
   - TruncateTable: false  # RECOMMENDED: Disable TRUNCATE for safety
   - Describe: true        # Allow DESCRIBE operations
-  - Command: true         # Allow SHOW, GRANT, etc.
+  - Command: true         # Allow SHOW and anything else the parser does not model (see note)
   - Comment: true         # Allow COMMENT statements
   - Commit: true          # Allow COMMIT
   - Rollback: true        # Allow ROLLBACK
@@ -359,9 +366,13 @@ that starts open.
 
 > ⚠️ **`Command` is a catch-all, and it is wider than it looks.** The server classifies statements
 > with a SQL parser, and everything the parser does not model separately lands in `Command`. On
-> Snowflake that includes `CREATE ROLE`, `CREATE USER`, `GRANT`, `CALL`, and, most importantly,
-> `EXECUTE IMMEDIATE` — which can carry a `DROP` inside a string and so route straight around
-> `Drop: false`.
+> Snowflake that includes `CREATE ROLE`, `CREATE USER`, `CALL`, `GRANT ROLE ... TO USER`, and,
+> most importantly, `EXECUTE IMMEDIATE` — which can carry a `DROP` inside a string and so route
+> straight around `Drop: false`.
+>
+> Privilege grants such as `GRANT SELECT ON TABLE ... TO ROLE ...` are recognized separately and
+> blocked, since the template has no `Grant` key. Role membership grants are not, so
+> `GRANT ROLE ... TO USER ...` goes through as a `Command`.
 >
 > The template above leaves `Command: true` because `SHOW` drives nearly all exploration and the
 > guide is not much use without it. Accept that trade knowingly: **this config is not a write
@@ -561,9 +572,11 @@ uvx snowflake-labs-mcp \
   --account YOUR-ACCOUNT \
   --user YOUR-USER \
   --role YOUR-ROLE \
-  --private-key-file ~/.snowflake/keys/rsa_key.p8 \
-  --verbose
+  --private-key-file ~/.snowflake/keys/rsa_key.p8
 ```
+
+Note: this server has no `--verbose` flag. Run it in the foreground as above and read what it
+prints on stderr.
 
 ---
 
@@ -608,7 +621,7 @@ Status: ✓ Connected
 | Organization uses SSO | SSO (externalbrowser/Okta/ADFS) | 5 min | Session-based |
 | Service accounts | PAT or Private Key | 5 min | Until revoked |
 | Local testing only | Password Authentication | 1 min | Session-based |
-| OAuth-enabled apps | OAuth Token | 5 min | Token expiry |
+| OAuth-enabled apps | Named connection, or SSO instead | 10 min | Token expiry |
 
 ### Common Command Patterns
 

@@ -10,6 +10,7 @@ brew install snowflake-cli
 
 # Configure. Omit --password so the CLI prompts for it without echoing;
 # passing it inline stores the password in your shell history, and snow warns about it.
+# snow prompts for every unset field, so press Enter to skip the ones you do not need.
 snow connection add \
   --connection-name prod \
   --account YOUR-ACCOUNT \
