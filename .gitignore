@@ -112,9 +112,15 @@ videos/az_tech_week_workshop/linkedin_data/
 .codex/
 .project
 
-# RuleMetric Antigravity workspace hooks (machine-local)
+# Per-machine agent tooling config (RuleMetric hooks, local permission grants).
+# These hold absolute home-directory paths and personal MCP connections, so they
+# must never land in this public repo. settings.local.json is also covered by a
+# global gitignore on Kyle's machine; this repeats it so the guard travels with
+# the repo rather than depending on one machine's config.
 .agents/hooks.json
+.claude/settings.local.json
 .claude/settings.local.json.bak
+.cursor/hooks.json
 
 # Claude Code ship-gate review artifacts (machine-local)
 .shipgate/
