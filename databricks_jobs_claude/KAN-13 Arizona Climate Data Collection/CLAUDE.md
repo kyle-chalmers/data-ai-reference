@@ -25,7 +25,7 @@ Build and deploy an automated Databricks job that collects monthly Arizona clima
 ## Key Resources
 - **Databricks Job ID:** 532675237528452
 - **Unity Catalog:** `climate_demo_claude` (catalog) → `default` (schema) → `monthly_arizona_weather` (table)
-- **Workspace notebook:** `/Users/kylechalmers@kclabs.ai/arizona_climate_data_collection`
+- **Workspace notebook:** `/Users/your-email@example.com/arizona_climate_data_collection`
 - **Schedule:** `0 0 6 3 * ?` — 6 AM on 3rd of month, America/Phoenix
 
 ## Relationship to Other Tickets

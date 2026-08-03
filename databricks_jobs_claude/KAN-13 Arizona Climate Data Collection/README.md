@@ -35,7 +35,7 @@ Phoenix, Tucson, Mesa, Chandler, Scottsdale, Glendale, Tempe, Peoria, Flagstaff,
 ## Deployment
 ```bash
 # Upload notebook
-databricks workspace import /Users/kylechalmers@kclabs.ai/arizona_climate_data_collection \
+databricks workspace import /Users/your-email@example.com/arizona_climate_data_collection \
   --file arizona_climate_data_collection.py --language PYTHON --format SOURCE --overwrite
 
 # Test run

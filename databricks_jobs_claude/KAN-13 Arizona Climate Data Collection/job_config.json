@@ -4,7 +4,7 @@
     {
       "task_key": "arizona_climate_data_task",
       "notebook_task": {
-        "notebook_path": "/Users/kylechalmers@kclabs.ai/arizona_climate_data_collection",
+        "notebook_path": "/Users/your-email@example.com/arizona_climate_data_collection",
         "source": "WORKSPACE"
       },
       "timeout_seconds": 3600
@@ -16,6 +16,6 @@
   },
   "max_concurrent_runs": 1,
   "email_notifications": {
-    "on_failure": ["kylechalmers@kclabs.ai"]
+    "on_failure": ["your-email@example.com"]
   }
 }
