@@ -1,0 +1,137 @@
+WEBVTT
+
+1
+00:00:06.000 --> 00:00:10.000
+<v Ada Lovelace>Okay, I think that's everyone. Let's start with the dashboard.</v>
+
+2
+00:00:10.000 --> 00:00:22.000
+<v Grace Hopper>Yeah, the exec dashboard broke again on Tuesday. The refresh failed and nobody noticed until Sanjay pinged me Wednesday afternoon asking why the numbers were two days stale.</v>
+
+3
+00:00:23.000 --> 00:00:25.000
+<v Ada Lovelace>Failed as in no alert fired?</v>
+
+4
+00:00:26.000 --> 00:00:33.000
+<v Grace Hopper>No alert. The job status said succeeded, because the extract technically completed. It just pulled zero rows.</v>
+
+5
+00:00:34.000 --> 00:00:36.000
+<v Ada Lovelace>That's the second time this month.</v>
+
+6
+00:00:37.000 --> 00:00:41.000
+<v Grace Hopper>Third, if you count the one in the first week.</v>
+
+7
+00:00:41.000 --> 00:00:54.000
+<v Ada Lovelace>Alright, I'll fix the refresh and put a row-count check on it, so it actually fails loudly when it pulls nothing. End of week, it's not a big change.</v>
+
+8
+00:00:54.000 --> 00:00:57.000
+<v Grace Hopper>Good.</v>
+
+9
+00:00:57.000 --> 00:01:05.000
+<v Ada Lovelace>Next thing. The QBR is in three weeks and Sanjay wants churn broken out by region this time.</v>
+
+10
+00:01:05.000 --> 00:01:12.000
+<v Grace Hopper>By region meaning the sales regions, or the billing regions? Because those don't line up.</v>
+
+11
+00:01:12.000 --> 00:01:17.000
+<v Ada Lovelace>I think sales regions. That's what the rest of the deck uses.</v>
+
+12
+00:01:18.000 --> 00:01:31.000
+<v Grace Hopper>Okay. I can pull that. It's going to take me a bit, we've never cut churn that way before. But yeah, I'll get the churn by region numbers together for the QBR.</v>
+
+13
+00:01:32.000 --> 00:01:35.000
+<v Ada Lovelace>You've got three weeks.</v>
+
+14
+00:01:35.000 --> 00:01:46.000
+<v Grace Hopper>Are we defining churn the same way finance does? Because I think they have a version of this. They showed a churn slide last quarter.</v>
+
+15
+00:01:46.000 --> 00:01:49.000
+<v Ada Lovelace>Might be worth looking at.</v>
+
+16
+00:01:49.000 --> 00:01:52.000
+<v Grace Hopper>Yeah, maybe.</v>
+
+17
+00:01:52.000 --> 00:02:01.000
+<v Ada Lovelace>Okay. The weekly deck. Honestly, somebody should look at whether we even need it anymore. I don't think anyone reads it.</v>
+
+18
+00:02:02.000 --> 00:02:10.000
+<v Grace Hopper>I've wondered the same thing. It'd be nice to have this stuff in Slack instead of a deck nobody opens.</v>
+
+19
+00:02:11.000 --> 00:02:16.000
+<v Ada Lovelace>Maybe. Let's park that, we don't have time to redesign reporting right now.</v>
+
+20
+00:02:17.000 --> 00:02:32.000
+<v Grace Hopper>One more on data quality. We've still got all those test accounts in the customer table showing up in the counts. A few hundred? They all have the internal email domain, so they're easy to spot.</v>
+
+21
+00:02:33.000 --> 00:02:36.000
+<v Ada Lovelace>We could probably just filter those out.</v>
+
+22
+00:02:36.000 --> 00:02:39.000
+<v Grace Hopper>Probably. Not urgent though.</v>
+
+23
+00:02:39.000 --> 00:02:59.000
+<v Ada Lovelace>The other thing is the revenue metric. Every team has a slightly different number and I keep getting asked which one is right. Let me just write down the definition we're actually using, so we have one place to point people. I'll put it in Confluence.</v>
+
+24
+00:02:59.000 --> 00:03:02.000
+<v Grace Hopper>Perfect, that'd help.</v>
+
+25
+00:03:02.000 --> 00:03:05.000
+<v Grace Hopper>Oh, before I forget. The EMEA numbers.</v>
+
+26
+00:03:06.000 --> 00:03:08.000
+<v Ada Lovelace>What about them?</v>
+
+27
+00:03:09.000 --> 00:03:22.000
+<v Grace Hopper>I'm not sure whether the EMEA rollup includes the reseller channel or not. If it does, the regional churn cut is going to look wrong and Sanjay will catch it.</v>
+
+28
+00:03:22.000 --> 00:03:26.000
+<v Ada Lovelace>That would be bad in front of the board.</v>
+
+29
+00:03:27.000 --> 00:03:35.000
+<v Grace Hopper>Yeah. I'll check whether reseller is in the EMEA rollup before I build the churn cut. Shouldn't take long.</v>
+
+30
+00:03:35.000 --> 00:03:38.000
+<v Ada Lovelace>Okay, good.</v>
+
+31
+00:03:38.000 --> 00:03:44.000
+<v Grace Hopper>Are we still thinking about moving off the current BI tool next year?</v>
+
+32
+00:03:44.000 --> 00:03:49.000
+<v Ada Lovelace>It comes up every planning cycle. I don't think anything's decided.</v>
+
+33
+00:03:49.000 --> 00:03:52.000
+<v Grace Hopper>Fair enough.</v>
+
+34
+00:03:53.000 --> 00:03:55.000
+<v Ada Lovelace>Alright, anything else? No? Thanks.</v>
