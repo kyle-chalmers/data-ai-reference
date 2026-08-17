@@ -95,7 +95,7 @@ it here.
 
 ## Adapting this
 
-`TEMPLATE.md` is meant to be edited. Every organisation asks for different things: a required
+`TEMPLATE.md` is meant to be edited. Every organization asks for different things: a required
 Components field, custom fields an admin added years ago, a different definition of done. Change the
 field list to match what your tracker actually requires, and the drafts change with it.
 
