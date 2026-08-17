@@ -52,6 +52,18 @@ A single extraction pass can only produce `accept`. The judgment lives in the ot
 ## Layout
 
 ```
-meeting-transcript.txt   the input
-prompts/                 the intake sequence, run in order
+meeting-transcript.txt     the input, as a Zoom-style .TXT with speaker turns
+meeting-notes-notion.md    the same meeting as a Notion AI Meeting Notes export
+meeting-transcript.vtt     the same meeting as a WebVTT subtitle file
+../skill/meeting-to-tickets/   the installable skill: SKILL.md + the editable TEMPLATE.md
+prompts/                   the original three-prompt sequence, superseded by the skill
 ```
+
+The three transcript files hold the same meeting in three formats on purpose. The point they make is
+that the input is a text file and the skill does not care where the text came from.
+
+They do **not** produce identical output, and that is expected rather than a defect. The Notion
+export is AI-written summary notes, so it loses the per-line speaker turns that the Named owner test
+leans on. The `.vtt` keeps speaker labels but wraps them in cue markup and timestamps. When a format
+costs the gate confidence on a test, the skill is instructed to say so in its output rather than
+guess.
