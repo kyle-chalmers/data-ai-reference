@@ -25,9 +25,15 @@ a Notion AI Meeting Notes export in Markdown, a Teams or Meet `.vtt`, or someone
 file all work. Do not parse for a specific tool's format, and do not fail when speaker labels are
 absent.
 
-**Format degradation is expected and should be reported, never hidden.** A Notion export loses
-speaker turns, which makes the Named owner test harder. When the input format costs you confidence on
-a test, say so in the output rather than guessing.
+**Format degradation is expected and should be reported, never hidden.** When the input format costs
+you confidence on a test, say so in the output rather than guessing.
+
+The case that matters most: AI-written meeting notes, Notion's included, record what was decided and
+drop who said it. Do not read that as nobody having committed to anything, which would decline the
+whole meeting. `TEMPLATE.md` has an explicit path for it under the Named owner test: the owner
+becomes a missing field rather than a failed test, so the item keeps going through the rest of the
+gate and only lands on `clarify` if it gets that far. Name the format limit in your output so the
+reader knows why.
 
 ## Procedure
 
@@ -59,7 +65,10 @@ not a reason; "no named owner, the phrasing was 'somebody should look at'" is.
 
 ### 4. Draft the `accept` and `clarify` items
 
-- **`accept`** items get drafted into the description skeleton in `TEMPLATE.md`, every field filled.
+- **`accept`** items get drafted into the description skeleton in `TEMPLATE.md`, every field filled,
+  plus the values for the Tracker fields block. An `accept` means nothing is outstanding: if the
+  owner does not resolve to a real account, or a field your board requires has no value, that is a
+  `clarify` rather than an accept with a hole in it.
 - **`clarify`** items get a short message back to the requester asking only for the fields that are
   actually missing, quoting the transcript line that prompted it so they have context.
 
@@ -77,12 +86,16 @@ This is not politeness. A transcript is a record of what a piece of software tho
 speech-to-text does fabricate sentences around pauses and crosstalk, and a fabricated line becoming a
 ticket with a real person's name on it is a failure worth fifteen seconds of review to avoid.
 
-## Writing to a tracker
+## This skill never writes to a tracker
 
-Once a human approves, write the accepted tickets.
+It drafts, it shows you the drafts, and it stops. Creating the tickets is a separate step you take
+afterwards, deliberately, using whatever integration your tracker has.
 
-This skill does not talk to any tracker itself, on purpose. It decides *what* is worth writing; a
-tracker integration decides *how* it gets written. Pair it with whatever your team uses:
+Keep that separation even once you trust the output. It decides *what* is worth writing; a tracker
+integration decides *how* it gets written, and collapsing the two removes the only place a human
+reads the drafts before they become real tickets with real names on them.
+
+Pair it with whatever your team uses:
 
 - **Jira** — Atlassian's official Claude Code plugin
   (`claude plugin install atlassian@claude-plugins-official`) handles the connection and resolves
@@ -90,8 +103,9 @@ tracker integration decides *how* it gets written. Pair it with whatever your te
 - **Anything else** — use that tracker's own integration. The gate and the field list are not
   specific to Jira; only the write step is.
 
-If a required field on your tracker is not in `TEMPLATE.md`, add it there rather than working around
-it here.
+If a required field on your tracker is not in `TEMPLATE.md`, add it to that file's **Tracker fields**
+block rather than working around it here. That block is separate from the description skeleton on
+purpose: the skeleton is prose, and structured fields are data your tracker validates at creation.
 
 ## Adapting this
 
@@ -101,3 +115,9 @@ field list to match what your tracker actually requires, and the drafts change w
 
 The six default fields are data-request fields. `TEMPLATE.md` carries substitutions for work that is
 not a data pull.
+
+`TEMPLATE.md` has two halves and they customise different things. The **description skeleton** is the
+prose that goes in the ticket body, and it is the bulk of what makes a ticket workable. The **Tracker
+fields** block is where you say which structured fields to set: project, issue type, Components,
+priority, assignee, custom fields. Keep them apart, because a `Components` line typed into the
+description is text that looks like a field, and your tracker will still reject the create.

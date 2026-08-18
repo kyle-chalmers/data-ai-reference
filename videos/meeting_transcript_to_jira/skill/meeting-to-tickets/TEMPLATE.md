@@ -7,27 +7,50 @@ field here does not apply to your team, remove it.
 Two parts. The gate decides whether a candidate is a ticket. The skeleton is what an `accept` gets
 filled into.
 
-> **Editing this for your own tracker.** The six fields under "The description skeleton" are
-> data-request fields, chosen because a data ticket needs more than a software task does. Common
-> additions: a required `Components` value, a `Priority` scheme your board enforces, a custom field
-> your admin added. Add them to the skeleton and they get filled on every draft. The gate's five
-> tests are tracker-independent and rarely need changing.
+> **Editing this for your own tracker.** Two places to edit, and they are not interchangeable. The
+> six fields under "The description skeleton" are the prose a data ticket needs beyond a software
+> task, so add there whatever you want written down and reasoned about. Structured fields your board
+> validates — a required `Components` value, a `Priority` scheme, a custom field your admin added —
+> go in the "Tracker fields" block near the bottom instead, because those are data rather than prose.
+> The gate's five tests are tracker-independent and rarely need changing.
 
 ---
 
 ## The gate
 
 Five tests. Run them in order and stop at the first failure — the order is what makes the outcome
-correct. A repeating item that is also missing fields is `recurring`, not `clarify`, because
-specifying it better would not change the fact that a one-off ticket is the wrong container.
+correct, and it is why One-off is checked before Specification. A repeating item that is also
+missing fields is `recurring`, not `clarify`, because specifying it better would not change the
+fact that a one-off ticket is the wrong container. Checking Specification first would return
+`clarify` and quietly file a standing job as a task.
 
 1. **Named owner** — a specific person committed to doing the thing, in their own words. Not "we
    should," not "someone could," not "that would be useful."
+
+   **When the source format carries no attribution.** AI-written meeting notes (Notion's, and most
+   summarisers) record what was decided and drop who said it. You cannot evidence this test either
+   way, and declining everything would be the wrong read of a real meeting. Treat the owner as a
+   **missing field rather than a failed test**, which means this test does not fail and does not stop
+   the run: carry the item on through tests 2 to 5 as normal. An unattributed item that is also a
+   standing job still fails One-off first and is `recurring`, exactly as it would be with a named
+   owner. Only if it reaches test 5 does it come out `clarify`, with the owner listed alongside
+   whatever else is missing.
+
+   Address the ownership question to whoever ran the meeting or shared the notes, since unattributed
+   notes by definition cannot tell you who to ask and that person can. Say in your output that
+   attribution was unavailable in the source, so the reader knows it is a format limit rather than a
+   judgment about the meeting.
 2. **Deliverable** — you can name the artifact that exists when it is done.
 3. **Decision** — something changes based on the output. If nothing changes, it is a note.
-4. **Specification** — business question, decision it informs, grain, metric definition, timeframe,
-   and deadline are all present or derivable from the transcript.
-5. **One-off** — it happens once. If it fires again on a trigger, it is a standing job.
+4. **One-off** — it happens once. If it fires again on a trigger, it is a standing job.
+5. **Specification** — everything the ticket needs to be created and worked is present or derivable
+   from the transcript. Three groups, and a gap in any of them fails this test:
+   - the six description fields: business question, decision it informs, grain, metric definition,
+     timeframe, deadline;
+   - **a resolvable owner** — a name, and one you can map to a real tracker account. An
+     unattributed source fails here, which is where an item that skipped test 1 lands;
+   - **every field your board actually requires**, from the Tracker fields block below. A required
+     `Components` value you cannot supply is a missing field like any other.
 
 | First test that fails | Outcome |
 |---|---|
@@ -115,3 +138,47 @@ have been filed.
 looks identical to scope you never considered, right up until someone asks about it. Writing down the
 rejection and the reason is what turns "we did not think of that" into "we decided against that, for
 this reason."
+
+---
+
+## Tracker fields
+
+The skeleton above is the ticket's **description**: the prose substance, and the biggest part of what
+makes a ticket workable. This section is the other half of customising this file, and it is a
+different mechanism.
+
+Your tracker validates **structured fields** at creation time: project, issue type, Components,
+priority, assignee, and whatever custom fields your admin added years ago. Those are data, not prose.
+A `Components` line typed into a description is text that looks like a field and satisfies nothing,
+so Jira will reject the create.
+
+So say what you want set, here, as fields rather than as description prose. Everything above this
+section goes in the description; everything in this block is a field.
+
+**This is a specification, not a mechanism.** This skill drafts and stops, so nothing here writes
+itself. The block exists so that when you or your tracker integration create the ticket, the field
+values are already decided and written down instead of being invented at the keyboard. If your
+integration can read it, good. If you are creating the ticket by hand, this is the list you fill in
+from.
+
+```
+Project:        <key, e.g. DATA>
+Issue type:     Task
+Components:     <required on many boards — set it or creation fails>
+Priority:       <your board's scheme, if it enforces one>
+Assignee:       <the named owner from the gate, resolved to a tracker account>
+Labels:         from-meeting-transcript
+<custom field>: <value, or "ask" to make it a clarify question>
+```
+
+Three things worth knowing before your first real run:
+
+- **Leave a field out and the create can still fail.** If your board marks something required, it is
+  required whether or not this block mentions it. Adding it here is how you fix that.
+- **A field you cannot fill is a `clarify`, not a guess.** This is enforced by the gate rather than
+  left to good intentions: test 5 covers the fields in this block, so an unsupplied required value
+  fails Specification and routes the item to `clarify`. Assignee is the common one, because the gate
+  can find a name in the transcript that still does not resolve to a tracker account. Ask rather than
+  assigning it to yourself.
+- **This block is instructions to the writer, not part of the ticket.** It never appears in the
+  description.
