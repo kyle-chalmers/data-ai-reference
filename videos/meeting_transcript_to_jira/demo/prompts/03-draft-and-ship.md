@@ -1,3 +1,8 @@
+> **Superseded.** This is the original three-prompt sequence, kept for reference. The skill at
+> `../../skill/meeting-to-tickets/` replaces it, and unlike this prompt the skill never writes to a
+> tracker itself: it drafts, shows you the drafts, and stops, leaving creation as a separate step
+> you take deliberately.
+
 # 3 — Draft the tickets, then ship on approval
 
 Run last. The stop instruction is the point of this prompt.

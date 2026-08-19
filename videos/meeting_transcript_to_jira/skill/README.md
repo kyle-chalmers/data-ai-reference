@@ -38,8 +38,15 @@ anything. You review, then say go.
 | `TEMPLATE.md` | The gate's five tests and the field list every ticket gets filled into | **Yes** |
 
 `TEMPLATE.md` is the part that makes the tickets consistent, and it is the part that has to match
-your tracker. If your Jira requires a Components value, or your admin added custom fields years ago,
-add them to the description skeleton in `TEMPLATE.md` and every draft picks them up.
+your tracker. It has two halves, and they do different jobs:
+
+- The **description skeleton** is the prose that goes in the ticket body — business question, grain,
+  metric definition, the transcript line it came from. This is the substance.
+- The **Tracker fields** block is where you name the structured fields to set: project, issue type,
+  Components, priority, assignee, custom fields.
+
+Keep the two apart. If your Jira requires a Components value, it goes in the Tracker fields block;
+typing it into the description writes the word into prose and the create still fails validation.
 
 The six default fields are data-request fields, because a data ticket needs more than a software task
 does. `TEMPLATE.md` carries substitutions for work that is not a data pull.

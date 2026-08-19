@@ -70,19 +70,31 @@ display names, since Zoom labels the transcript by participant rather than by vo
 speakers is the minimum — a single-speaker transcript collapses the "who committed" question and
 the assignee lookup along with it.
 
-| Step | Prompt | What it does |
-|---|---|---|
-| 1 | [`01-extract-candidates.md`](demo/prompts/01-extract-candidates.md) | Reads the transcript, judges every candidate, writes nothing |
-| 2 | [`02-clarify.md`](demo/prompts/02-clarify.md) | Drafts questions back to requesters for items missing fields |
-| 3 | [`03-draft-and-ship.md`](demo/prompts/03-draft-and-ship.md) | Drafts the tickets, stops, creates them on approval |
+### The skill
 
-[TICKET_TEMPLATE.md](TICKET_TEMPLATE.md) is what steps 1 and 3 work against: the five-test gate that
-routes a candidate to one of the four outcomes, and the description skeleton an `accept` gets filled
-into.
+Install [`skill/meeting-to-tickets/`](skill/meeting-to-tickets/) and point it at any plain-text
+transcript. It lists every candidate, runs each through the gate, drafts the survivors against the
+template, and stops.
+
+**It never writes to your tracker.** Creating the tickets is a separate step you take afterwards,
+deliberately, once you have read the drafts. That separation is the point rather than an omission:
+it is the only place a human sees what would be filed before it becomes a real ticket with a real
+name on it. [`skill/README.md`](skill/README.md) covers installing it.
+
+[`skill/meeting-to-tickets/TEMPLATE.md`](skill/meeting-to-tickets/TEMPLATE.md) is what it works
+against, and it is the file you edit. It has two halves: the five-test gate plus the description
+skeleton an `accept` gets filled into, and a Tracker fields block where you name the structured
+fields your board validates.
 
 Atlassian's `capture-tasks-from-meeting-notes` skill covers the extraction on its own and is a
-reasonable place to start. These prompts add the layer it does not: deciding what should not be
-filed, and catching what a request is missing before it lands on the board.
+reasonable place to start. This adds the layer it does not: deciding what should not be filed, and
+catching what a request is missing before it lands on the board.
+
+### The original prompts, superseded
+
+[`demo/prompts/`](demo/prompts/) holds the three-prompt sequence this started as: extract, clarify,
+then draft-and-ship. They still work and are kept for reference, but the skill replaces them, and the
+third prompt creates tickets directly where the skill deliberately stops short of that.
 
 ---
 
