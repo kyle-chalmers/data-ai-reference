@@ -2,9 +2,11 @@
 
 Quick setup guide for Atlassian MCP - enables Claude to interact with Jira, Confluence, and Compass.
 
-> **Updated 2026-07-30 — the endpoint moved.** The SSE endpoint this guide originally used
-> (`--transport sse … /v1/sse`) has been replaced. The current one is the HTTP transport at
-> `https://mcp.atlassian.com/v1/mcp/authv2`. Commands below have been updated.
+> **Updated 2026-09-04 — the endpoint moved again.** The SSE endpoint this guide originally used
+> (`--transport sse … /v1/sse`) was replaced by an HTTP transport at `/v1/mcp/authv2` on
+> 2026-07-30, and that has since moved to `https://mcp.atlassian.com/v2/mcp` — confirmed against
+> the endpoint the official Atlassian Claude Code plugin's own manifest points at. Commands below
+> have been updated.
 >
 > **There is now an easier path.** Claude ships a Connectors Directory, so you can skip the command
 > entirely: Customize in the left sidebar → Connectors → **+** → Browse → Atlassian → Connect.
@@ -17,7 +19,7 @@ Quick setup guide for Atlassian MCP - enables Claude to interact with Jira, Conf
 
 ```bash
 # 1. Add to Claude Code at USER LEVEL (available in all projects)
-claude mcp add --scope user --transport http atlassian https://mcp.atlassian.com/v1/mcp/authv2
+claude mcp add --scope user --transport http atlassian https://mcp.atlassian.com/v2/mcp
 
 # 2. Verify
 claude mcp list
@@ -151,13 +153,14 @@ Claude: [Finds and displays Confluence page content]
 ```bash
 # Remove and re-add
 claude mcp remove atlassian -s user
-claude mcp add --scope user --transport http atlassian https://mcp.atlassian.com/v1/mcp/authv2
+claude mcp add --scope user --transport http atlassian https://mcp.atlassian.com/v2/mcp
 # Then authenticate again with /mcp
 ```
 
-**Still pointed at the old SSE endpoint?** If you set this up before mid-2026 you may still have
-`--transport sse … /v1/sse` registered, which no longer resolves. Remove and re-add with the
-command above.
+**Still pointed at an old endpoint?** If you set this up before mid-2026 you may still have
+`--transport sse … /v1/sse` registered, and if you set it up before September 2026 you may still
+have `/v1/mcp/authv2` registered — neither resolves anymore. Remove and re-add with the command
+above.
 
 **OAuth flow blocked:**
 - Check that pop-up blockers are disabled
@@ -171,11 +174,12 @@ command above.
 
 ### Known Limitations
 
-**SSE transport is gone (resolved 2026):**
-- The SSE endpoint this guide originally used has been replaced by the HTTP transport at
-  `https://mcp.atlassian.com/v1/mcp/authv2`
-- If you configured this before mid-2026, remove and re-add — the old URL no longer resolves
-- The connection-drop reports that motivated this note applied to the SSE transport
+**Endpoint has moved twice (SSE gone 2026, v1 HTTP gone September 2026):**
+- The SSE endpoint this guide originally used was replaced by an HTTP transport at
+  `/v1/mcp/authv2`, which has since itself been replaced by `https://mcp.atlassian.com/v2/mcp`
+- If you configured this before mid-2026, or before September 2026, remove and re-add — neither
+  older URL still resolves
+- The connection-drop reports that motivated the original SSE note applied to the SSE transport
 
 **Reliability:**
 - May require re-authentication after extended periods
@@ -231,6 +235,6 @@ Claude: [Should list your spaces]
 
 **Transport:** HTTP
 **Documentation:** https://support.atlassian.com/atlassian-rovo-mcp-server/
-**MCP URL:** https://mcp.atlassian.com/v1/mcp/authv2
+**MCP URL:** https://mcp.atlassian.com/v2/mcp
 **Easier alternative:** Claude's Connectors Directory (Customize → Connectors → + → Browse → Atlassian)
 **Cost:** free on all Jira Cloud plans including Free. Cloud only, not Data Center or Server

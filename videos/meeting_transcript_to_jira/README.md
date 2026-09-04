@@ -33,7 +33,7 @@ has.
 If you would rather wire it up by hand, the current endpoint is:
 
 ```bash
-claude mcp add --transport http atlassian https://mcp.atlassian.com/v1/mcp/authv2
+claude mcp add --transport http atlassian https://mcp.atlassian.com/v2/mcp
 ```
 
 > The older `--transport sse … /v1/sse` endpoint has moved. See
@@ -52,6 +52,23 @@ claude plugin install atlassian@claude-plugins-official
 This registers five skills, including `capture-tasks-from-meeting-notes`, which extracts action
 items from notes and creates Jira tasks. Source:
 [atlassian/atlassian-mcp-server](https://github.com/atlassian/atlassian-mcp-server).
+
+**Rovo MCP vs the plugin — they're not two separate connections.** Confirmed from the plugin's own
+[manifest](https://github.com/atlassian/atlassian-mcp-server/blob/main/.claude-plugin/plugin.json):
+installing the plugin bundles the Rovo MCP connection *and* the skills together, in one step.
+
+| | Atlassian Rovo MCP Server ("the Atlassian MCP") | The official plugin |
+|---|---|---|
+| **What it is** | The connection itself — Atlassian's remote MCP server | A bundle: that same connection, plus ready-made skills on top |
+| **Install** | Connectors UI, or `claude mcp add --transport http atlassian https://mcp.atlassian.com/v2/mcp` | `claude plugin install atlassian@claude-plugins-official` |
+| **You get** | Raw tools: search, read, create, update Jira/Confluence/etc. | Same tools, plus skills like `capture-tasks-from-meeting-notes` |
+| **Cost / plan** | Free on every Jira Cloud plan, incl. Free | Free — same underlying connection |
+| **When to use alone** | Writing your own prompts or skills against the raw tools | Want Atlassian's own ready-made workflows |
+
+Also worth knowing: "Rovo MCP Server" and "the Atlassian MCP" are the same product under two names.
+It shipped as the "Remote MCP Server" and was renamed to include "Rovo" as part of Atlassian's
+general AI branding, not because it gained Rovo-specific features — confusing enough that
+[Atlassian's own Community forum asked whether they're the same server](https://community.atlassian.com/forums/Rovo-articles/Is-Atlassian-Rovo-MCP-Server-amp-Atlassian-MCP-Server-the-Same/ba-p/3207029).
 
 **3. Get a transcript.** Any text transcript works — see
 [TRANSCRIPT_SOURCES.md](TRANSCRIPT_SOURCES.md) for how to export one from whatever your team
