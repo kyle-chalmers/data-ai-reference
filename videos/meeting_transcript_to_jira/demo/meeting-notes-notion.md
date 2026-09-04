@@ -33,7 +33,7 @@ not resolved in the call.
   the internal email domain. Filtering them out was floated but described as not urgent.
 - Every team is using a slightly different revenue number. A commitment was made to write down the
   definition actually in use and publish it in Confluence, so there is one place to point people.
-- A question was raised late in the call about whether the EMEA rollup includes the reseller channel.
+- A question was raised late in the call about whether the Europe rollup includes the reseller channel.
   If it does, the regional churn cut will be wrong. A commitment was made to check this before
   building the churn cut.
 - Moving off the current BI tool next year came up again. It was noted that this surfaces every
@@ -44,4 +44,4 @@ not resolved in the call.
 - Fix the dashboard refresh and add a row-count check. End of week.
 - Pull churn by region for the QBR. Three weeks.
 - Document the revenue metric definition in Confluence.
-- Confirm whether reseller is included in the EMEA rollup, before the churn cut is built.
+- Confirm whether reseller is included in the Europe rollup, before the churn cut is built.

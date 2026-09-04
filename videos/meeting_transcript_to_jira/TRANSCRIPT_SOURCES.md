@@ -3,12 +3,13 @@
 The input to this workflow is a plain text file. That is the whole interface, so it does not much
 matter what your team records with — only whether you can get the text onto disk.
 
-![Every meeting tool has an exit to a text file](images/transcript-sources.png)
 
 Rows re-verified against vendor documentation on **2026-08-02**. This space changes quickly, and plan
 and admin details in particular go stale fast, so check the vendor's own docs before relying on one.
 
 ## Read this first: it is probably just switched off
+
+![Who has to flip the switch](images/transcript-switch.png)
 
 The most common reason you cannot find a transcript is not that your tool lacks the feature. It is
 that nobody enabled it, or that you are not the person allowed to download it.
@@ -36,6 +37,8 @@ Tools that capture system audio instead (Notion, Granola, Supernormal) have noth
 trade is that nothing appears in the participant list either, so tell people.
 
 ---
+
+![Every meeting tool has an exit to a text file](images/transcript-sources.png)
 
 ## Tier 1 — a readable file, no API work
 

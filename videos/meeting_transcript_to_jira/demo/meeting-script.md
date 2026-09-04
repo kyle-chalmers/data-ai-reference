@@ -26,12 +26,16 @@ demo to work.
 Nine things that sound like work. Four are genuine commitments, five are not. Do not tidy this up
 while reading — the hedging and the tangents are the point.
 
-| # | Item | Who | Should resolve to |
+Outcomes below are the **measured** result of running the gate on 2026-09-04 (1 accept, 3 clarify,
+4 decline; items 6 and 7 merge, so 8 candidates rather than 9). An earlier version of this table
+predicted 3 accepts and was wrong.
+
+| # | Item | Who | Resolves to |
 |---|---|---|---|
 | 1 | Fix the silent dashboard refresh | Ada | accept |
 | 2 | Churn by region for the QBR | Grace | **clarify** — churn undefined, region taxonomy uncertain |
-| 3 | Document the revenue metric definition | Ada | accept |
-| 4 | **Check whether reseller is in the EMEA rollup** | Grace | accept — **this is the miss**, and it blocks #2 |
+| 3 | Document the revenue metric definition | Ada | **clarify** — which revenue measure, and who signs off |
+| 4 | **Check whether reseller is in the Europe rollup** | Grace | **clarify** — **this is the miss**, and it blocks #2 |
 | 5 | Finance might already have a churn number | — | decline, observation |
 | 6 | Does anyone still read the weekly deck | — | decline, no owner |
 | 7 | Put it in Slack instead | — | decline, wish, explicitly parked |
@@ -105,16 +109,16 @@ so we have one place to point people. I'll put it in Confluence.
 
 **Grace:** Perfect, that'd help.
 
-**Grace:** Oh, before I forget. The EMEA numbers.
+**Grace:** Oh, before I forget. The Europe numbers.
 
 **Ada:** What about them?
 
-**Grace:** I'm not sure whether the EMEA rollup includes the reseller channel or not. If it does,
+**Grace:** I'm not sure whether the Europe rollup includes the reseller channel or not. If it does,
 the regional churn cut is going to look wrong and Sanjay will catch it.
 
 **Ada:** That would be bad in front of the board.
 
-**Grace:** Yeah. I'll check whether reseller is in the EMEA rollup before I build the churn cut.
+**Grace:** Yeah. I'll check whether reseller is in the Europe rollup before I build the churn cut.
 Shouldn't take long.
 
 **Ada:** Okay, good.
@@ -126,18 +130,3 @@ Shouldn't take long.
 **Grace:** Fair enough.
 
 **Ada:** Alright, anything else? No? Thanks.
-
----
-
-## After recording
-
-Zoom writes the transcript to `~/Documents/Zoom`. Copy it in over `meeting-transcript.txt` — that
-file is the pre-written fallback, and the real Zoom output is what you want on camera.
-
-Expect it to be messier than the script above: false starts, the occasional mis-transcription,
-timestamps and speaker labels on every line. That is good. It makes the commitment-vs-idea call
-genuinely hard rather than obviously easy.
-
-**Check before you rely on it:** run the gate prompt against the real transcript and confirm item 4
-still survives. If Zoom garbled it badly enough that extraction drops it, re-record just that
-exchange and splice it, or say the line more clearly on the retake.

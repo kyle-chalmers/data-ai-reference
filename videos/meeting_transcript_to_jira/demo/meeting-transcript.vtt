@@ -98,7 +98,7 @@ WEBVTT
 
 25
 00:03:02.000 --> 00:03:05.000
-<v Grace Hopper>Oh, before I forget. The EMEA numbers.</v>
+<v Grace Hopper>Oh, before I forget. The Europe numbers.</v>
 
 26
 00:03:06.000 --> 00:03:08.000
@@ -106,7 +106,7 @@ WEBVTT
 
 27
 00:03:09.000 --> 00:03:22.000
-<v Grace Hopper>I'm not sure whether the EMEA rollup includes the reseller channel or not. If it does, the regional churn cut is going to look wrong and Sanjay will catch it.</v>
+<v Grace Hopper>I'm not sure whether the Europe rollup includes the reseller channel or not. If it does, the regional churn cut is going to look wrong and Sanjay will catch it.</v>
 
 28
 00:03:22.000 --> 00:03:26.000
@@ -114,7 +114,7 @@ WEBVTT
 
 29
 00:03:27.000 --> 00:03:35.000
-<v Grace Hopper>Yeah. I'll check whether reseller is in the EMEA rollup before I build the churn cut. Shouldn't take long.</v>
+<v Grace Hopper>Yeah. I'll check whether reseller is in the Europe rollup before I build the churn cut. Shouldn't take long.</v>
 
 30
 00:03:35.000 --> 00:03:38.000

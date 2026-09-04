@@ -52,15 +52,15 @@ Ada Lovelace: The other thing is the revenue metric. Every team has a slightly d
 
 Grace Hopper: Perfect, that'd help.
 
-Grace Hopper: Oh, before I forget. The EMEA numbers.
+Grace Hopper: Oh, before I forget. The Europe numbers.
 
 Ada Lovelace: What about them?
 
-Grace Hopper: I'm not sure whether the EMEA rollup includes the reseller channel or not. If it does, the regional churn cut is going to look wrong and Sanjay will catch it.
+Grace Hopper: I'm not sure whether the Europe rollup includes the reseller channel or not. If it does, the regional churn cut is going to look wrong and Sanjay will catch it.
 
 Ada Lovelace: That would be bad in front of the board.
 
-Grace Hopper: Yeah. I'll check whether reseller is in the EMEA rollup before I build the churn cut. Shouldn't take long.
+Grace Hopper: Yeah. I'll check whether reseller is in the Europe rollup before I build the churn cut. Shouldn't take long.
 
 Ada Lovelace: Okay, good.
 
