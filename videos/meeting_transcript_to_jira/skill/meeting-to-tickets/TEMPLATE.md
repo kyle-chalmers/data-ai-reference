@@ -106,25 +106,57 @@ Paste this into the Jira description and fill it in. Every `accept` gets all of 
 genuinely does not apply says so and says why, because a blank field and an inapplicable field read
 identically six weeks later.
 
-```
-Business question:
-Decision it informs:
-Grain:
-Metric definition:
-Timeframe:
-Deadline:
+````markdown
+- **Business question**
+  - <what is actually being asked>
+- **Decision it informs**
+  - <what changes based on the answer>
+- **Grain**
+  - <one row per what>
+- **Metric definition**
+  - <how the measure is calculated, and whose definition it is>
+- **Timeframe**
+  - <the period covered>
+- **Deadline**
+  - <when it is needed>
 
-Owner:
-Depends on:            [external commitments this waits on, and who owns them]
-Source:                [transcript file + the quoted line that prompted this]
+---
 
-Acceptance criteria
--
--
+- **Owner**
+  - <the named owner from the gate>
+- **Depends on**
+  - <external commitments this waits on, and who owns them>
+- **Source**
+  - <transcript file + the quoted line that prompted this>
 
-Decided not to include
-- <thing>  —  <why>
-```
+### Acceptance criteria
+
+- <criterion>
+  - <the quoted line or detail it rests on, when it needs one>
+- <criterion>
+
+### Decided not to include
+
+- <thing>
+  - <why>
+````
+
+**Write it as Markdown, and let the tracker render it.** The block above is Markdown on purpose:
+Jira converts it on the way in, so `**bold**` becomes bold, `###` becomes a heading, and the
+indented bullets become genuinely nested lists rather than indented text. Verified against Jira
+Cloud on 2026-09-05. Linear, GitHub and Notion render the same source, and a tracker that renders
+nothing still shows readable text — which a space-aligned block does not, because padding set for a
+monospace column goes ragged the moment it hits a proportional font.
+
+**Label on the bullet, value on the sub-bullet.** Two reasons. A field whose value runs to two or
+three sentences stays readable, where the same text squeezed into a table cell does not. And a field
+nobody filled shows up as a label with nothing under it, which is visible in a way a blank line is
+not — spotting the field the meeting never filled is most of the value here.
+
+Indent sub-bullets by two spaces. The `---` between the fields and the provenance block is load
+bearing: without it Markdown reads all nine as one list, because a blank line does not start a new
+one.
+
 
 Two of these fields carry more weight than their size suggests.
 
