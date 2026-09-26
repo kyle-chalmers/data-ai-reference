@@ -36,6 +36,10 @@ The `videos/` folder contains complete examples from YouTube videos:
   - Unity Catalog exploration
   - Notebook creation and job scheduling
   - Job troubleshooting and error resolution
+- **[Claude + Databricks Managed MCP Servers](videos/claude_databricks_mcp_connectors/README.md)** - Connecting Claude to Genie One, Unity Catalog Functions, and AI Search:
+  - The OAuth app and `system.ai` prerequisite Anthropic's tutorial leaves out
+  - Building functions and AI Search indexes with the Databricks CLI (or an AI agent)
+  - Prompts for having an agent set up new servers, plus troubleshooting
 - **Integrating Jira and Ticket Taking** - Atlassian integration including:
   - Atlassian CLI setup and configuration
   - Atlassian MCP server setup
