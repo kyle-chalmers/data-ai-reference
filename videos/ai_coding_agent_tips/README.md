@@ -1,5 +1,7 @@
 # 5 Small Coding Agent Tips That Make a Big Difference
 
+> **Maintained skills:** [git-ship](https://github.com/kyle-chalmers/kyle-chalmers-skills/tree/main/skills/git-ship) and [encourage](https://github.com/kyle-chalmers/kyle-chalmers-skills/tree/main/skills/encourage). The skill source has moved to the consolidated collection. This folder preserves the tutorial's examples and setup material.
+
 **Video:** [5 Small Coding Agent Tips That Make a Big Difference](https://www.youtube.com/watch?v=SDEtP1msjos)
 
 A quick reference for all 5 tips covered in the video, with links and example files.
