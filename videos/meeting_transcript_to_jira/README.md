@@ -1,5 +1,7 @@
 # Meeting Transcript to Jira Tickets
 
+> **Maintained skills:** [meeting-to-tickets](https://github.com/kyle-chalmers/kyle-chalmers-skills/tree/main/skills/meeting-to-tickets). The skill source has moved to the consolidated collection. This folder preserves the tutorial's examples and setup material.
+
 > **YouTube:** Turn Any Meeting Transcript Into Scoped Jira Tickets with Claude Code — [Kyle Chalmers Data & AI](https://youtube.com/@kylechalmersdataai)
 
 Turning a meeting into work that actually gets followed up and finished, using Claude Code, the
