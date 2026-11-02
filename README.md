@@ -40,6 +40,10 @@ The `videos/` folder contains complete examples from YouTube videos:
   - The OAuth app and `system.ai` prerequisite Anthropic's tutorial leaves out
   - Building functions and AI Search indexes with the Databricks CLI (or an AI agent)
   - Prompts for having an agent set up new servers, plus troubleshooting
+- **[Live Claude Dashboards on a Databricks Metric View](videos/claude_dashboards_databricks_metric_views/README.md)** - A Claude Dashboard that stays live on governed definitions:
+  - Connecting Claude to Databricks' recommended SQL server (Unity Gateway) with your own sign-in
+  - A metric view, a MEASURE()-only dashboard prompt, and tie-out SQL to check every tile
+  - A refresh test that proves the tiles follow the data
 - **Integrating Jira and Ticket Taking** - Atlassian integration including:
   - Atlassian CLI setup and configuration
   - Atlassian MCP server setup
