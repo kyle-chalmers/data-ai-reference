@@ -23,10 +23,11 @@ checks for it.
 5. [Step 3: Build the dashboard](#step-3-build-the-dashboard)
 6. [Step 4: Check the numbers by hand](#step-4-check-the-numbers-by-hand)
 7. [Step 5: Prove it is live](#step-5-prove-it-is-live)
-8. [Alternative: a service principal](#alternative-a-service-principal)
-9. [Troubleshooting](#troubleshooting)
-10. [Cleanup](#cleanup)
-11. [Official documentation](#official-documentation)
+8. [Step 6: Share it](#step-6-share-it)
+9. [Alternative: a service principal](#alternative-a-service-principal)
+10. [Troubleshooting](#troubleshooting)
+11. [Cleanup](#cleanup)
+12. [Official documentation](#official-documentation)
 
 ---
 
@@ -109,6 +110,37 @@ dashboard, and check that total and Europe net revenue each rose by exactly 10 b
 December point jumped. Then run the `DELETE` and refresh again. Query History shows a new query for
 each source on every refresh.
 
+## Step 6: Share it
+
+Dashboards start private. Click **Share** to invite people and choose who else can open it. What
+you can do depends on your plan
+([Share artifacts](https://support.claude.com/en/articles/9547008-share-artifacts),
+[Artifacts admin guide](https://support.claude.com/en/articles/16994751-artifacts-admin-guide-for-team-and-enterprise-plans)):
+
+| Plan | Who can open it |
+|---|---|
+| Pro, Max, Ultra | Only you, people you invite by email, or anyone with the link |
+| Team, Enterprise | People you add, everyone in your organization, or (if an owner allows it) anyone with the link |
+
+Access levels are Can view, Commenter and Can edit. For a dashboard on live data, a few rules
+matter more than the menu:
+
+- **Viewers use their own connections.** A dashboard that reads a connected app runs with the
+  viewer's connection, not yours, so each person sees what their own permissions allow, and a tile
+  they can't access shows an error.
+- **Each viewer needs the connector.** On Team and Enterprise, an owner adds the connector in
+  Organization settings > Connectors and each person connects with their own login. The first time
+  they open the dashboard, Claude asks them to approve it.
+- **No public links.** Dashboards that use connectors can't use "Anyone with the link", and people
+  invited from outside your organization don't get the parts that use connectors. On a personal
+  plan, treat a live dashboard as your own tool.
+- **Usage is per viewer.** Refreshes count against each viewer's own plan limits.
+- **Refresh is on demand.** Queries rerun when someone opens the dashboard, clicks Refresh or
+  changes a filter; no scheduled refresh is documented.
+
+On Team and Enterprise, owners control whether Dashboards are on, whether anything can be shared
+outside the organization, and can see published artifacts and remove outside access.
+
 ## Alternative: a service principal
 
 If teammates without Databricks logins need the dashboard, put a read-only service principal behind
@@ -141,3 +173,6 @@ Remove the connector from Claude when you are done, and revoke any service princ
 - [Govern an MCP](https://docs.databricks.com/aws/en/ai-gateway/govern-mcp-service)
 - [Unity Catalog metric views: query](https://docs.databricks.com/aws/en/uc-semantics/metric-views/query)
 - [Get started with Claude Dashboards](https://support.claude.com/en/articles/17454700-get-started-with-claude-dashboards)
+- [Share artifacts](https://support.claude.com/en/articles/9547008-share-artifacts)
+- [Artifacts admin guide for Team and Enterprise](https://support.claude.com/en/articles/16994751-artifacts-admin-guide-for-team-and-enterprise-plans)
+- [Custom connectors for Team and Enterprise](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp)
